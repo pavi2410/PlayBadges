@@ -1,0 +1,19 @@
+{
+  "name": "PlayBadges",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@replit/database": "^2.0.0",
+    "express": "^4.17.1",
+    "google-play-scraper": "^8.0.2",
+    "marked": "^2.0.0",
+    "node-fetch": "^2.6.1"
+  }
+}
