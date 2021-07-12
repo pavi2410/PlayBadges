@@ -21,3 +21,5 @@ https://PlayBadges.pavi2410.repl.co/ratings/image?id=<YOUR APP'S PACKAGE NAME>
 
 ## Credits
 https://github.com/facundoolano/google-play-scraper
+
+### Created By [@pavi2410](https://github.com/pavi2410)
