@@ -8,7 +8,7 @@ Show off your Play Store™ app's downloads and rating in your repo
 ![Downloads badge](https://PlayBadges.pavi2410.me/downloads/image?id=appinventor.ai_pavitragolchha.VR)
 
 ```
-https://PlayBadges.pavi2410.repl.co/downloads/image?id=<YOUR APP'S PACKAGE NAME>
+https://PlayBadges.pavi2410.me/downloads/image?id=<YOUR APP'S PACKAGE NAME>
 ```
 
 2. Get ratings badge
@@ -16,7 +16,7 @@ https://PlayBadges.pavi2410.repl.co/downloads/image?id=<YOUR APP'S PACKAGE NAME>
 ![Ratings badge](https://PlayBadges.pavi2410.me/ratings/image?id=appinventor.ai_pavitragolchha.VR)
 
 ```
-https://PlayBadges.pavi2410.repl.co/ratings/image?id=<YOUR APP'S PACKAGE NAME>
+https://PlayBadges.pavi2410.me/ratings/image?id=<YOUR APP'S PACKAGE NAME>
 ```
 
 ## Credits
