@@ -99,8 +99,10 @@ app.get('/ratings', (req, res) => {
 app.get('/:action([^/]+)/image', (req, res) => {
   const action = req.params.action
   const id = req.query.id
+  
+  const hostname = req.hostname
 
-  const url = `${selfURL}/${action}?id=${id}`
+  const url = `https://${hostname}/${action}?id=${id}`
   const redirectURL = shieldsURL(url)
   res.redirect(redirectURL)
 });
