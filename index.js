@@ -7,7 +7,6 @@ const Database = require("@replit/database")
 const app = express();
 const db = new Database()
 
-const selfURL = "https://PlayBadges.pavi2410.repl.co"
 const README_URL = "https://raw.githubusercontent.com/pavi2410/PlayBadges/main/README.md"
 
 function randomNumber() {
@@ -21,10 +20,8 @@ function shieldsURL(url) {
 app.get('/', (req, res) => {
   fetch(README_URL)
     .then(res => res.text())
-    .then(markdown => {
-      const html = marked(markdown)
-      res.send(html)
-    })
+    .then(markdown => marked(markdown))
+    .then(html => res.send(html))
     .catch(e => res.sendStatus(404))
 });
 
@@ -99,7 +96,7 @@ app.get('/ratings', (req, res) => {
 app.get('/:action([^/]+)/image', (req, res) => {
   const action = req.params.action
   const id = req.query.id
-  
+
   const hostname = req.hostname
 
   const url = `https://${hostname}/${action}?id=${id}`
