@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
     .catch(e => res.sendStatus(404))
 });
 
-app.get('/analytics/:action([^/]+)', (req, res) => {
+app.get('/:action([^/]+)/analytics', (req, res) => {
   const action = req.params.action
   db.list(`${action}_`)
     .then(async matches => {
