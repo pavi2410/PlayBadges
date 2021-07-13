@@ -8,9 +8,15 @@ const app = express();
 const db = new Database()
 
 const selfURL = "https://PlayBadges.pavi2410.repl.co"
-const randomNumber = () => ('' + Math.random()).substring(2)
-const shieldsURL = (url) => `https://img.shields.io/endpoint?url=${url}&r=${randomNumber()}`
 const README_URL = "https://raw.githubusercontent.com/pavi2410/PlayBadges/main/README.md"
+
+function randomNumber() {
+  return ('' + Math.random()).substring(2)
+}
+
+function shieldsURL(url) {
+  return `https://img.shields.io/endpoint?url=${encodeURIComponent(url)}&r=${randomNumber()}`
+}
 
 app.get('/', (req, res) => {
   fetch(README_URL)
