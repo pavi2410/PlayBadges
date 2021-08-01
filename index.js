@@ -1,4 +1,5 @@
 const express = require('express');
+const logger = require('morgan')
 const gplay = require('google-play-scraper');
 const marked = require("marked")
 const fetch = require("node-fetch")
@@ -16,6 +17,8 @@ function randomNumber() {
 function shieldsURL(url) {
   return `https://img.shields.io/endpoint?url=${encodeURIComponent(url)}&r=${randomNumber()}`
 }
+
+app.use(logger('dev'))
 
 app.get('/', (req, res) => {
   fetch(README_URL)
