@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
     .catch(e => res.sendStatus(404))
 });
 
-app.get('/:action([^/]+)/analytics', (req, res) => {
+app.get('/analytics/:action([^/]+)', (req, res) => {
   const action = req.params.action
   db.list(`${action}_`)
     .then(async matches => {
@@ -96,7 +96,7 @@ app.get('/ratings', (req, res) => {
     .catch(e => res.sendStatus(404))
 });
 
-app.get('/:action([^/]+)/image', (req, res) => {
+app.get('/badge/:action([^/]+)', (req, res) => {
   const action = req.params.action
   const id = req.query.id
 
