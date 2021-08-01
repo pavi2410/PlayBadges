@@ -1,3 +1,4 @@
+const fsp = require('fs/promises')
 const express = require('express');
 const logger = require('morgan')
 const gplay = require('google-play-scraper');
@@ -7,8 +8,6 @@ const Database = require("@replit/database")
 
 const app = express();
 const db = new Database()
-
-const README_URL = "https://raw.githubusercontent.com/pavi2410/PlayBadges/main/README.md"
 
 function randomNumber() {
   return ('' + Math.random()).substring(2)
@@ -21,8 +20,8 @@ function shieldsURL(url) {
 app.use(logger('dev'))
 
 app.get('/', (req, res) => {
-  fetch(README_URL)
-    .then(res => res.text())
+  fsp.readFile('./README.md')
+    .then(text => text.toString())
     .then(markdown => marked(markdown))
     .then(html => res.send(html))
     .catch(e => res.sendStatus(404))
