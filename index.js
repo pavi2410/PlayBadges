@@ -1,95 +1,95 @@
 console.log('using node', process.version)
 
-const fsp = require('fs').promises
-const express = require('express');
-const logger = require('morgan')
-const gplay = require('google-play-scraper');
-const marked = require("marked")
-const Database = require("@replit/database")
+import {readFile} from 'node:fs/promises'
+import express from 'express'
+import logger from 'morgan'
+import gplay from 'google-play-scraper'
+import marked from 'marked'
+import Database from '@replit/database'
 
-const app = express();
+const app = express()
 const db = new Database()
-
-function randomNumber() {
-  return ('' + Math.random()).substring(2)
-}
 
 function shieldsURL({label, message}) {
   return `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`
 }
 
+async function logAnalyticsEvent(key) {
+  const value = await db.get(key)
+  const newValue = parseInt(value ?? 0, 10) + 1
+  await db.set(key, newValue)
+}
+
 app.use(logger('dev'))
 
-app.get('/', (req, res) => {
-  fsp.readFile('./README.md')
-    .then(text => text.toString())
-    .then(markdown => marked(markdown))
-    .then(html => res.send(html))
-    .catch(e => res.sendStatus(404))
-});
-
-app.get('/analytics/:action([^/]+)', (req, res) => {
-  const action = req.params.action
-  db.list(`${action}_`)
-    .then(async matches => {
-      const data = {}
-      for (key of matches) {
-        const newKey = key.substring(`${action}_`.length)
-        data[newKey] = await db.get(key)
-      }
-      return data
-    })
-    .then(v => {
-      res.json({
-        n: Object.keys(v).length,
-        ids: v
-      })
-    })
-    .catch(e => res.sendStatus(404))
+app.get('/', async (req, res) => {
+  try {
+    const text = await readFile('./README.md')
+    const md = await text.toString()
+    const html = await marked(md)
+    res.send(html)
+  } catch (e) {
+    res.sendStatus(404)
+  }
 })
 
-app.get('/badge/downloads', (req, res) => {
-  const id = req.query.id
+app.get('/analytics/:action([^/]+)', async (req, res) => {
+  const {action} = req.params
 
-  const key = "downloads_" + id
-
-  db.get(key)
-    .then(value => {
-      if (value === null) value = 0 // value ??= 0
-      const newValue = parseInt(value, 10) + 1
-      return db.set(key, newValue)
+  try {
+    const matches = await db.list(`${action}_`)
+    const data = {}
+    for (let key of matches) {
+      const newKey = key.substring(`${action}_`.length)
+      data[newKey] = await db.get(key)
+    }
+    res.json({
+      n: Object.keys(data).length,
+      ids: data
     })
-    .then(() => gplay.app({appId: id}))
-    .then(appDetails => {
-      res.redirect(shieldsURL({
-        "label": "Downloads",
-        "message": `${appDetails.maxInstalls}`,
-      }))
-    })
-    .catch(e => res.sendStatus(404))
-});
+  } catch (e) {
+    res.sendStatus(404)
+  }
+})
 
-app.get('/badge/ratings', (req, res) => {
-  const id = req.query.id
+app.get('/badge/downloads', async (req, res) => {
+  const {id} = req.query
 
-  const key = "ratings_" + id
+  const key = 'downloads_' + id
 
-  db.get(key)
-    .then(value => {
-      if (value === null) value = 0 // value ??= 0
-      const newValue = parseInt(value, 10) + 1
-      return db.set(key, newValue)
-    })
-    .then(() => gplay.app({appId: id}))
-    .then(appDetails => {
-      res.redirect(shieldsURL({
-        "label": "Rating",
-        "message": `${appDetails.scoreText}/5 (${appDetails.ratings})`
-      }))
-    })
-    .catch(e => res.sendStatus(404))
-});
+  try {
+    await logAnalyticsEvent(key);
+
+    const appDetails = await gplay.app({appId: id})
+
+    res.redirect(shieldsURL({
+      "label": "Downloads",
+      "message": `${appDetails.maxInstalls}`,
+    }))
+  } catch (e) {
+    res.sendStatus(404)
+  }
+})
+
+app.get('/badge/ratings', async (req, res) => {
+  const {id} = req.query
+
+  const key = 'ratings_' + id
+
+  try {
+    await logAnalyticsEvent(key);
+
+    const appDetails = await gplay.app({appId: id})
+
+    res.redirect(shieldsURL({
+      "label": "Rating",
+      "message": `${appDetails.scoreText}/5 (${appDetails.ratings})`
+    }))
+  } catch (e) {
+    res.sendStatus(404)
+  }
+})
 
 app.listen(3000, () => {
   console.log('server started at http://localhost:3000');
-});
+})
