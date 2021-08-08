@@ -10,8 +10,10 @@ import Database from '@replit/database'
 const app = express()
 const db = new Database()
 
-function shieldsURL({label, message}) {
-  return `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`
+function shieldsURL({label, message, style}) {
+  let url = `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`;
+  if (style) url += `&style=${encodeURIComponent(style)}`
+  return url
 }
 
 function makeStars(score) {
@@ -59,7 +61,7 @@ app.get('/analytics/:action([^/]+)', async (req, res) => {
 })
 
 app.get('/badge/downloads', async (req, res) => {
-  const {id, pretty} = req.query
+  const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined
 
   try {
@@ -69,6 +71,7 @@ app.get('/badge/downloads', async (req, res) => {
     res.redirect(shieldsURL({
       label: 'Downloads',
       message: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
+      style
     }))
   } catch (e) {
     res.sendStatus(404)
@@ -76,7 +79,7 @@ app.get('/badge/downloads', async (req, res) => {
 })
 
 app.get('/badge/ratings', async (req, res) => {
-  const {id, pretty} = req.query
+  const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined
 
   try {
@@ -85,7 +88,8 @@ app.get('/badge/ratings', async (req, res) => {
     const appDetails = await gplay.app({appId: id})
     res.redirect(shieldsURL({
       label: 'Rating',
-      message: isPretty ? `${makeStars(appDetails.score)}` : `${appDetails.scoreText}/5 (${appDetails.ratings})`
+      message: isPretty ? `${makeStars(appDetails.score)}` : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
+      style
     }))
   } catch (e) {
     res.sendStatus(404)
