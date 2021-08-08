@@ -1,9 +1,10 @@
-const fsp = require('fs/promises')
+console.log('using node', process.version)
+
+const fsp = require('fs').promises
 const express = require('express');
 const logger = require('morgan')
 const gplay = require('google-play-scraper');
 const marked = require("marked")
-const fetch = require("node-fetch")
 const Database = require("@replit/database")
 
 const app = express();
@@ -107,5 +108,5 @@ app.get('/badge/:action([^/]+)', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log('server started');
+  console.log('server started at http://localhost:3000');
 });
