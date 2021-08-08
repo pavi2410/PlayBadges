@@ -14,8 +14,8 @@ function randomNumber() {
   return ('' + Math.random()).substring(2)
 }
 
-function shieldsURL(url) {
-  return `https://img.shields.io/endpoint?logo=google-play&color=00cc00&labelColor=0f0f23&url=${encodeURIComponent(url)}&r=${randomNumber()}`
+function shieldsURL({label, message}) {
+  return `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`
 }
 
 app.use(logger('dev'))
@@ -48,7 +48,7 @@ app.get('/analytics/:action([^/]+)', (req, res) => {
     .catch(e => res.sendStatus(404))
 })
 
-app.get('/downloads', (req, res) => {
+app.get('/badge/downloads', (req, res) => {
   const id = req.query.id
 
   const key = "downloads_" + id
@@ -59,18 +59,17 @@ app.get('/downloads', (req, res) => {
       const newValue = parseInt(value, 10) + 1
       return db.set(key, newValue)
     })
-    .then(() => gplay.app({ appId: id }))
+    .then(() => gplay.app({appId: id}))
     .then(appDetails => {
-      res.json({
-        "schemaVersion": 1,
+      res.redirect(shieldsURL({
         "label": "Downloads",
         "message": `${appDetails.maxInstalls}`,
-      })
+      }))
     })
     .catch(e => res.sendStatus(404))
 });
 
-app.get('/ratings', (req, res) => {
+app.get('/badge/ratings', (req, res) => {
   const id = req.query.id
 
   const key = "ratings_" + id
@@ -81,27 +80,14 @@ app.get('/ratings', (req, res) => {
       const newValue = parseInt(value, 10) + 1
       return db.set(key, newValue)
     })
-    .then(() => gplay.app({ appId: id }))
+    .then(() => gplay.app({appId: id}))
     .then(appDetails => {
-
-      res.json({
-        "schemaVersion": 1,
+      res.redirect(shieldsURL({
         "label": "Rating",
         "message": `${appDetails.scoreText}/5 (${appDetails.ratings})`
-      })
+      }))
     })
     .catch(e => res.sendStatus(404))
-});
-
-app.get('/badge/:action([^/]+)', (req, res) => {
-  const action = req.params.action
-  const id = req.query.id
-
-  const hostname = req.hostname
-
-  const url = `https://${hostname}/${action}?id=${id}`
-  const redirectURL = shieldsURL(url)
-  res.redirect(redirectURL)
 });
 
 app.listen(3000, () => {
