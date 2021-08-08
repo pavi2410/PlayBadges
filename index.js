@@ -15,7 +15,7 @@ function randomNumber() {
 }
 
 function shieldsURL(url) {
-  return `https://img.shields.io/endpoint?url=${encodeURIComponent(url)}&r=${randomNumber()}`
+  return `https://img.shields.io/endpoint?logo=google-play&color=00cc00&labelColor=0f0f23&url=${encodeURIComponent(url)}&r=${randomNumber()}`
 }
 
 app.use(logger('dev'))
@@ -63,9 +63,8 @@ app.get('/downloads', (req, res) => {
     .then(appDetails => {
       res.json({
         "schemaVersion": 1,
-        "label": appDetails.title,
-        "message": `${appDetails.maxInstalls} downloads`,
-        "color": "green"
+        "label": "Downloads",
+        "message": `${appDetails.maxInstalls}`,
       })
     })
     .catch(e => res.sendStatus(404))
@@ -88,9 +87,8 @@ app.get('/ratings', (req, res) => {
 
       res.json({
         "schemaVersion": 1,
-        "label": appDetails.title,
-        "message": `${score} stars`,
-        "color": "green"
+        "label": "Rating",
+        "message": `${score} stars`
       })
     })
     .catch(e => res.sendStatus(404))
