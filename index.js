@@ -83,12 +83,11 @@ app.get('/ratings', (req, res) => {
     })
     .then(() => gplay.app({ appId: id }))
     .then(appDetails => {
-      const score = Math.round(appDetails.score * 100) / 100
 
       res.json({
         "schemaVersion": 1,
         "label": "Rating",
-        "message": `${score} stars`
+        "message": `${appDetails.scoreText}/5 (${appDetails.ratings})`
       })
     })
     .catch(e => res.sendStatus(404))
