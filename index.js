@@ -14,6 +14,12 @@ function shieldsURL({label, message}) {
   return `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`
 }
 
+function makeStars(score) {
+  const left = Math.round(score)
+  const right = 5 - left
+  return ('★').repeat(left) + ('☆').repeat(right)
+}
+
 async function logAnalyticsEvent(key) {
   const value = await db.get(key)
   const newValue = parseInt(value ?? 0, 10) + 1
@@ -53,18 +59,16 @@ app.get('/analytics/:action([^/]+)', async (req, res) => {
 })
 
 app.get('/badge/downloads', async (req, res) => {
-  const {id} = req.query
-
-  const key = 'downloads_' + id
+  const {id, pretty} = req.query
+  const isPretty = pretty !== undefined
 
   try {
-    await logAnalyticsEvent(key);
+    await logAnalyticsEvent('downloads_' + id)
 
     const appDetails = await gplay.app({appId: id})
-
     res.redirect(shieldsURL({
-      "label": "Downloads",
-      "message": `${appDetails.maxInstalls}`,
+      label: 'Downloads',
+      message: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
     }))
   } catch (e) {
     res.sendStatus(404)
@@ -72,18 +76,16 @@ app.get('/badge/downloads', async (req, res) => {
 })
 
 app.get('/badge/ratings', async (req, res) => {
-  const {id} = req.query
-
-  const key = 'ratings_' + id
+  const {id, pretty} = req.query
+  const isPretty = pretty !== undefined
 
   try {
-    await logAnalyticsEvent(key);
+    await logAnalyticsEvent('ratings_' + id)
 
     const appDetails = await gplay.app({appId: id})
-
     res.redirect(shieldsURL({
-      "label": "Rating",
-      "message": `${appDetails.scoreText}/5 (${appDetails.ratings})`
+      label: 'Rating',
+      message: isPretty ? `${makeStars(appDetails.score)}` : `${appDetails.scoreText}/5 (${appDetails.ratings})`
     }))
   } catch (e) {
     res.sendStatus(404)
