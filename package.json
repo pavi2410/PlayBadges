@@ -14,7 +14,7 @@
   "dependencies": {
     "@replit/database": "^2.0.0",
     "express": "^4.17.1",
-    "google-play-scraper": "^8.0.2",
+    "google-play-scraper": "^8.0.3",
     "marked": "^2.0.0",
     "morgan": "^1.10.0"
   },
