@@ -3,12 +3,13 @@ console.log('using node', process.version)
 import {readFile} from 'node:fs/promises'
 import express from 'express'
 import logger from 'morgan'
-import gplay from 'google-play-scraper'
+import { default as gplayModule } from 'google-play-scraper'
 import marked from 'marked'
 import Database from '@replit/database'
 
 const app = express()
 const db = new Database()
+const gplay = gplayModule.memoized({ maxAge: 1000 * 60 * 60 * 24 }) // 24 hrs
 
 function shieldsURL({label, message, style}) {
   let url = `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`;
