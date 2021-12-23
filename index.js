@@ -1,10 +1,8 @@
 console.log('using node', process.version)
 
-import {readFile} from 'node:fs/promises'
 import express from 'express'
 import logger from 'morgan'
 import { default as gplayModule } from 'google-play-scraper'
-import marked from 'marked'
 import Database from '@replit/database'
 
 const app = express()
@@ -32,14 +30,7 @@ async function logAnalyticsEvent(key) {
 app.use(logger('dev'))
 
 app.get('/', async (req, res) => {
-  try {
-    const text = await readFile('./README.md')
-    const md = await text.toString()
-    const html = await marked(md)
-    res.send(html)
-  } catch (e) {
-    res.sendStatus(404)
-  }
+  res.redirect('https://github.com/pavi2410/PlayBadges')
 })
 
 app.get('/analytics/:action([^/]+)', async (req, res) => {
