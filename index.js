@@ -4,6 +4,7 @@ import express from 'express'
 import logger from 'morgan'
 import { default as gplayModule } from 'google-play-scraper'
 import Database from '@replit/database'
+import * as requestCountry from 'request-country'
 
 const app = express()
 const db = new Database()
@@ -56,10 +57,12 @@ app.get('/badge/downloads', async (req, res) => {
   const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined
 
+  const countryCode = requestCountry.default(req)
+
   try {
     await logAnalyticsEvent('downloads_' + id)
 
-    const appDetails = await gplay.app({appId: id})
+    const appDetails = await gplay.app({appId: id, country: countryCode})
     res.redirect(shieldsURL({
       label: 'Downloads',
       message: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
@@ -74,10 +77,12 @@ app.get('/badge/ratings', async (req, res) => {
   const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined
 
+  const countryCode = requestCountry.default(req)
+
   try {
     await logAnalyticsEvent('ratings_' + id)
 
-    const appDetails = await gplay.app({appId: id})
+    const appDetails = await gplay.app({appId: id, country: countryCode})
     res.redirect(shieldsURL({
       label: 'Rating',
       message: isPretty ? `${makeStars(appDetails.score)}` : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
