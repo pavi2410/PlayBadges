@@ -3,13 +3,15 @@ console.log('using node', process.version)
 import express from 'express'
 import logger from 'morgan'
 import { default as gplayModule } from 'google-play-scraper'
-import Database from '@replit/database'
 import * as requestCountry from 'request-country'
+import { MongoClient } from 'mongodb'
 import 'dotenv/config'
 
 const app = express()
-const db = new Database()
 const gplay = gplayModule.memoized({ maxAge: 1000 * 60 * 60 * 24 }) // 24 hrs
+const mongo = new MongoClient(process.env.DB_URL);
+const db = mongo.db("playbadges");
+const stats = db.collection("stats")
 
 function shieldsURL({label, message, style}) {
   const url = new URL('https://img.shields.io/static/v1')
@@ -28,10 +30,12 @@ function makeStars(score) {
   return ('★').repeat(left) + ('☆').repeat(right)
 }
 
-async function collectStats(key) {
-  const value = await db.get(key)
-  const newValue = parseInt(value ?? 0, 10) + 1
-  await db.set(key, newValue)
+async function collectStats(type, packageName) {
+  await stats.updateOne(
+    { packageName },
+    { $inc: { ['count.'+type]: 1, 'count.all': 1 } },
+    { upsert: true }
+  )
 }
 
 app.use(logger('dev'))
@@ -48,20 +52,18 @@ app.get('/health', (req, res) => {
   res.send('OK')
 })
 
-app.get('/stats/:action([^/]+).json', async (req, res) => {
-  const {action} = req.params
-
+app.get('/stats.json', async (req, res) => {
   try {
-    const matches = await db.list(`${action}_`)
-    const data = {}
-    for (let key of matches) {
-      const newKey = key.substring(`${action}_`.length)
-      data[newKey] = await db.get(key)
-    }
-    res.json({
-      n: Object.keys(data).length,
-      ids: data
-    })
+    // get an object of count of package names and sum of counts
+    const [{ n, t }] = await stats.aggregate([
+      { $group: { _id: null, n: { $sum: 1 }, t: { $sum: '$count.all' } } }
+    ]).toArray()
+
+    // find top 10 apps ordered by count.all
+    const docs = await stats.find({}).sort({'count.all': -1}).limit(10).project({ _id: 0 }).toArray()
+    const stats = Object.fromEntries(docs.map(doc => [doc.packageName, doc.count]))
+    
+    res.json({ n, t, stats })
   } catch (e) {
     res.sendStatus(500)
     console.error(e)
@@ -82,7 +84,7 @@ app.get('/badge/downloads', async (req, res) => {
       style
     }))
 
-    await collectStats('downloads_' + id)
+    await collectStats('downloads', id)
   } catch (e) {
     res.redirect(shieldsURL({
       label: 'Downloads',
@@ -107,7 +109,7 @@ app.get('/badge/ratings', async (req, res) => {
       style
     }))
 
-    await collectStats('ratings_' + id)
+    await collectStats('ratings', id)
   } catch (e) {
     res.redirect(shieldsURL({
       label: 'Rating',
