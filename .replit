@@ -1,2 +1,0 @@
-language = "node.js"
-run = "npx nodemon index.js"
