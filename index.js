@@ -5,6 +5,7 @@ import logger from 'morgan'
 import { default as gplayModule } from 'google-play-scraper'
 import Database from '@replit/database'
 import * as requestCountry from 'request-country'
+import 'dotenv/config'
 
 const app = express()
 const db = new Database()
@@ -36,7 +37,11 @@ async function collectStats(key) {
 app.use(logger('dev'))
 
 app.get('/', (req, res) => {
-  res.redirect('https://github.com/pavi2410/PlayBadges')
+  if (process.env.NODE_ENV === 'production') {
+    res.redirect('https://github.com/pavi2410/PlayBadges')
+  } else {
+    res.end('Hello World!')
+  }
 })
 
 app.get('/health', (req, res) => {
