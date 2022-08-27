@@ -11,9 +11,14 @@ const db = new Database()
 const gplay = gplayModule.memoized({ maxAge: 1000 * 60 * 60 * 24 }) // 24 hrs
 
 function shieldsURL({label, message, style}) {
-  let url = `https://img.shields.io/static/v1?logo=google-play&color=00cc00&labelColor=0f0f23&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`;
-  if (style) url += `&style=${encodeURIComponent(style)}`
-  return url
+  const url = new URL('https://img.shields.io/static/v1')
+  url.searchParams.append('logo', 'google-play')
+  url.searchParams.append('color', '00cc00')
+  url.searchParams.append('labelColor', '0f0f23')
+  url.searchParams.append('label', label)
+  url.searchParams.append('message', message)
+  if (style) url.searchParams.append('style', style)
+  return url.toString()
 }
 
 function makeStars(score) {
