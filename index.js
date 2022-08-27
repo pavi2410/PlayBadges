@@ -124,8 +124,8 @@ app.get('/badge/ratings', async (req, res) => {
   try {
     const appDetails = await gplay.app({appId: id, country: countryCode})
     res.redirect(shieldsURL({
-      label: 'Rating',
-      message: isPretty ? `${makeStars(appDetails.score)}` : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
+      label: 'Ratings',
+      message: isPretty ? makeStars(appDetails.score) : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
       style
     }))
 
