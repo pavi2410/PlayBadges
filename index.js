@@ -63,7 +63,8 @@ app.get('/stats/:action([^/]+).json', async (req, res) => {
       ids: data
     })
   } catch (e) {
-    res.sendStatus(404)
+    res.sendStatus(500)
+    console.error(e)
   }
 })
 
@@ -83,7 +84,12 @@ app.get('/badge/downloads', async (req, res) => {
       style
     }))
   } catch (e) {
-    res.sendStatus(404)
+    res.redirect(shieldsURL({
+      label: 'Downloads',
+      message: 'error',
+      style
+    }))
+    console.error(e)
   }
 })
 
@@ -103,7 +109,12 @@ app.get('/badge/ratings', async (req, res) => {
       style
     }))
   } catch (e) {
-    res.sendStatus(404)
+    res.redirect(shieldsURL({
+      label: 'Rating',
+      message: 'error',
+      style
+    }))
+    console.error(e)
   }
 })
 
