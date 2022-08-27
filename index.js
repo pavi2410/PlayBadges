@@ -70,6 +70,26 @@ app.get('/stats.json', async (req, res) => {
   }
 })
 
+app.get('/stats', async (req, res) => {
+  try {
+    // get an object of count of package names and sum of counts
+    const [{ n, t }] = await stats.aggregate([
+      { $group: { _id: null, n: { $sum: 1 }, t: { $sum: '$count.all' } } }
+    ]).toArray()
+
+    res.redirect(shieldsURL({
+      label: 'Usage',
+      message: `${t} (${n} apps)`,
+    }))
+  } catch (e) {
+    res.redirect(shieldsURL({
+      label: 'Usage',
+      message: 'error'
+    }))
+    console.error(e)
+  }
+})
+
 app.get('/badge/downloads', async (req, res) => {
   const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined

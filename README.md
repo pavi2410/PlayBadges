@@ -1,4 +1,5 @@
-# PlayBadges
+# PlayBadges ![][stats badge]
+
 Show off your Play Store™ app's downloads and rating in your repo
 
 ## Usage
@@ -32,3 +33,5 @@ https://github.com/facundoolano/google-play-scraper
 [ratings badge]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR
 [ratings badge pretty]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&pretty
 [ratings badge style]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
+
+[stats badge]: http://PlayBadges.pavi2410.me/stats
