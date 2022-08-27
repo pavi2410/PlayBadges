@@ -35,8 +35,12 @@ async function logAnalyticsEvent(key) {
 
 app.use(logger('dev'))
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
   res.redirect('https://github.com/pavi2410/PlayBadges')
+})
+
+app.get('/health', (req, res) => {
+  res.send('OK')
 })
 
 app.get('/analytics/:action([^/]+)', async (req, res) => {
