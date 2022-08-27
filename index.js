@@ -27,7 +27,7 @@ function makeStars(score) {
   return ('★').repeat(left) + ('☆').repeat(right)
 }
 
-async function logAnalyticsEvent(key) {
+async function collectStats(key) {
   const value = await db.get(key)
   const newValue = parseInt(value ?? 0, 10) + 1
   await db.set(key, newValue)
@@ -43,7 +43,7 @@ app.get('/health', (req, res) => {
   res.send('OK')
 })
 
-app.get('/analytics/:action([^/]+)', async (req, res) => {
+app.get('/stats/:action([^/]+).json', async (req, res) => {
   const {action} = req.params
 
   try {
@@ -69,7 +69,7 @@ app.get('/badge/downloads', async (req, res) => {
   const countryCode = requestCountry.default(req)
 
   try {
-    await logAnalyticsEvent('downloads_' + id)
+    await collectStats('downloads_' + id)
 
     const appDetails = await gplay.app({appId: id, country: countryCode})
     res.redirect(shieldsURL({
@@ -89,7 +89,7 @@ app.get('/badge/ratings', async (req, res) => {
   const countryCode = requestCountry.default(req)
 
   try {
-    await logAnalyticsEvent('ratings_' + id)
+    await collectStats('ratings_' + id)
 
     const appDetails = await gplay.app({appId: id, country: countryCode})
     res.redirect(shieldsURL({
