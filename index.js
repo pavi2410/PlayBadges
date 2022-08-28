@@ -11,7 +11,6 @@ const app = express()
 const gplay = gplayModule.memoized({ maxAge: 1000 * 60 * 60 * 24 }) // 24 hrs
 const mongo = new MongoClient(process.env.DB_URL);
 const db = mongo.db("playbadges");
-const stats = db.collection("stats")
 
 function shieldsURL({label, message, style}) {
   const url = new URL('https://img.shields.io/static/v1')
@@ -31,7 +30,7 @@ function makeStars(score) {
 }
 
 async function collectStats(type, packageName) {
-  await stats.updateOne(
+  await db.collection("stats").updateOne(
     { packageName },
     { $inc: { ['count.'+type]: 1, 'count.all': 1 } },
     { upsert: true }
@@ -55,12 +54,12 @@ app.get('/health', (req, res) => {
 app.get('/stats.json', async (req, res) => {
   try {
     // get an object of count of package names and sum of counts
-    const [{ n, t }] = await stats.aggregate([
+    const [{ n, t }] = await db.collection("stats").aggregate([
       { $group: { _id: null, n: { $sum: 1 }, t: { $sum: '$count.all' } } }
     ]).toArray()
 
     // find top 10 apps ordered by count.all
-    const docs = await stats.find({}).sort({'count.all': -1}).limit(10).project({ _id: 0 }).toArray()
+    const docs = await db.collection("stats").find({}).sort({'count.all': -1}).limit(10).project({ _id: 0 }).toArray()
     const stats = Object.fromEntries(docs.map(doc => [doc.packageName, doc.count]))
     
     res.json({ n, t, stats })
@@ -73,7 +72,7 @@ app.get('/stats.json', async (req, res) => {
 app.get('/stats', async (req, res) => {
   try {
     // get an object of count of package names and sum of counts
-    const [{ n, t }] = await stats.aggregate([
+    const [{ n, t }] = await db.collection("stats").aggregate([
       { $group: { _id: null, n: { $sum: 1 }, t: { $sum: '$count.all' } } }
     ]).toArray()
 
