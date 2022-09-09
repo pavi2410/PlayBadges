@@ -139,7 +139,7 @@ app.get('/badge/ratings', async (req, res) => {
   }
 })
 
-const port = process.env.PORT ?? 3000
+const port = process.env.PORT ?? 2410
 app.listen(port, () => {
   console.log(`⚡ server started at http://localhost:${port}`);
 })
