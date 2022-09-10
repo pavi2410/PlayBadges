@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploying to Google Cloud
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: auth
+      name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+    - name: Deploy to App Engine
+      id: deploy
+      uses: google-github-actions/deploy-appengine@v0
+
+    - name: Test
+      run: curl "${{ steps.deploy.outputs.url }}"
