@@ -13,6 +13,7 @@
   "repository": "https://github.com/pavi2410/PlayBadges",
   "license": "ISC",
   "dependencies": {
+    "badge-maker": "^3.3.1",
     "dotenv": "^16.0.1",
     "express": "^4.17.1",
     "google-play-scraper": "^9.1.1",
@@ -22,5 +23,10 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "badge-maker@3.3.1": "patches/badge-maker@3.3.1.patch"
+    }
   }
 }
