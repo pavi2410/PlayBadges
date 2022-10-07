@@ -112,7 +112,6 @@ app.get('/badge/downloads', async (req, res) => {
     res.send(genBadge({
       label: 'Downloads',
       message: 'error',
-      style
     }))
     console.error(e)
   }
@@ -137,7 +136,6 @@ app.get('/badge/ratings', async (req, res) => {
     res.send(genBadge({
       label: 'Rating',
       message: 'error',
-      style
     }))
     console.error(e)
   }
