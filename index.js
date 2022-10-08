@@ -10,6 +10,7 @@ import { makeBadge } from 'badge-maker'
 
 const app = express()
 const gplay = gplayModule.memoized({ maxAge: 1000 * 60 * 60 * 24 }) // 24 hrs
+if (!process.env.DB_URL) throw new Error('DB_URL not set')
 const mongo = new MongoClient(process.env.DB_URL);
 const db = mongo.db("playbadges");
 
