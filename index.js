@@ -97,7 +97,7 @@ app.get('/badge/downloads', async (req, res) => {
   const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined
 
-  const countryCode = requestCountry.default(req)
+  const countryCode = requestCountry.default(req, 'US')
 
   try {
     const appDetails = await gplay.app({appId: id, country: countryCode})
@@ -119,9 +119,10 @@ app.get('/badge/downloads', async (req, res) => {
 
 app.get('/badge/ratings', async (req, res) => {
   const {id, pretty, style} = req.query
+  
   const isPretty = pretty !== undefined
 
-  const countryCode = requestCountry.default(req)
+  const countryCode = requestCountry.default(req, 'US')
 
   try {
     const appDetails = await gplay.app({appId: id, country: countryCode})
