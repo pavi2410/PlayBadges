@@ -1,5 +1,3 @@
-console.log('using node', process.version)
-
 import express from 'express'
 import logger from 'morgan'
 import { default as gplayModule } from 'google-play-scraper'
@@ -144,5 +142,7 @@ app.get('/badge/ratings', async (req, res) => {
 
 const port = process.env.PORT ?? 2410
 app.listen(port, () => {
+  console.log('using node', process.version)
+  console.log('startup time', performance.now(), 'ms')
   console.log(`⚡ server started at http://localhost:${port}`);
 })
