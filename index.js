@@ -69,7 +69,7 @@ app.get('/stats.json', async (req, res) => {
     res.json({ n, t, stats })
   } catch (e) {
     res.sendStatus(500)
-    console.error(e)
+    console.error('[Stats.json]', `${e.name}: ${e.message}`)
   }
 })
 
@@ -81,15 +81,15 @@ app.get('/stats', async (req, res) => {
     ]).toArray()
 
     res.send(genBadge({
-      label: 'Usage',
+      label: 'Stats',
       message: `${t} (${n} apps)`,
     }))
   } catch (e) {
     res.send(genBadge({
-      label: 'Usage',
-      message: 'error'
+      label: 'Stats',
+      message: `${e.name}: ${e.message}`
     }))
-    console.error(e)
+    console.error('[Stats]', `${e.name}: ${e.message}`)
   }
 })
 
@@ -111,9 +111,9 @@ app.get('/badge/downloads', async (req, res) => {
   } catch (e) {
     res.send(genBadge({
       label: 'Downloads',
-      message: 'error',
+      message: `${e.name}: ${e.message}`,
     }))
-    console.error(e)
+    console.error('[Downloads]', `${e.name}: ${e.message}`)
   }
 })
 
@@ -134,10 +134,10 @@ app.get('/badge/ratings', async (req, res) => {
     await collectStats('ratings', id)
   } catch (e) {
     res.send(genBadge({
-      label: 'Rating',
-      message: 'error',
+      label: 'Ratings',
+      message: `${e.name}: ${e.message}`,
     }))
-    console.error(e)
+    console.error('[Ratings]', `${e.name}: ${e.message}`)
   }
 })
 
