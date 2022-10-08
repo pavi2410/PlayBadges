@@ -80,11 +80,13 @@ app.get('/stats', async (req, res) => {
       { $group: { _id: null, n: { $sum: 1 }, t: { $sum: '$count.all' } } }
     ]).toArray()
 
+    res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Stats',
       message: `${t} (${n} apps)`,
     }))
   } catch (e) {
+    res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Stats',
       message: `${e.name}: ${e.message}`
@@ -101,6 +103,7 @@ app.get('/badge/downloads', async (req, res) => {
 
   try {
     const appDetails = await gplay.app({appId: id, country: countryCode})
+    res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Downloads',
       message: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
@@ -109,6 +112,7 @@ app.get('/badge/downloads', async (req, res) => {
 
     await collectStats('downloads', id)
   } catch (e) {
+    res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Downloads',
       message: `${e.name}: ${e.message}`,
@@ -126,6 +130,7 @@ app.get('/badge/ratings', async (req, res) => {
 
   try {
     const appDetails = await gplay.app({appId: id, country: countryCode})
+    res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Ratings',
       message: isPretty ? makeStars(appDetails.score) : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
@@ -134,6 +139,7 @@ app.get('/badge/ratings', async (req, res) => {
 
     await collectStats('ratings', id)
   } catch (e) {
+    res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Ratings',
       message: `${e.name}: ${e.message}`,
