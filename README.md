@@ -6,24 +6,39 @@ Show off your Play Store™ app's downloads and rating in your repo
 
 1. Get downloads badge
 
-    ![Downloads badge][downloads badge] ![Downloads badge pretty][downloads badge pretty] ![Downloads badge style][downloads badge style]
+    | config | badge |
+    | --- | :---: |
+    | Default | ![Downloads badge][downloads badge] |
+    | Pretty | ![Downloads badge pretty][downloads badge pretty] |
+    | `for-the-badge` style | ![Downloads badge style][downloads badge style] |
 
     ```
     https://PlayBadges.pavi2410.me/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty][&style=...]
     ```
 
 2. Get ratings badge
-
-    ![Ratings badge][ratings badge] ![Ratings badge pretty][ratings badge pretty] ![Ratings badge style][ratings badge style]
+    
+    | config | badge |
+    | --- | :---: |
+    | Default | ![Ratings badge][ratings badge] |
+    | Pretty | ![Ratings badge pretty][ratings badge pretty] |
+    | `for-the-badge` style | ![Ratings badge style][ratings badge style] |
 
     ```
     https://PlayBadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty][&style=...]
     ```
+    
+### Options
 
-### Credits
-https://github.com/facundoolano/google-play-scraper
+- `pretty`: Shows the numbers prettily (default = disabled; add the flag to enable, remove to disable)
+- `style`: one of `plastic` (default), `flat`, `flat-square`, `for-the-badge`
 
-### Created By
+## Credits
+
+- https://github.com/facundoolano/google-play-scraper
+- https://shields.io
+
+## Created By
 [pavi2410](https://github.com/pavi2410)
 
 [downloads badge]: https://PlayBadges.pavi2410.me/badge/downloads?id=appinventor.ai_pavitragolchha.VR
