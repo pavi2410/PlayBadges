@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon --delay 10 -r dotenv/config index.js"
+    "dev": "node --watch -r dotenv/config index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +20,5 @@
     "mongodb": "^4.9.0",
     "morgan": "^1.10.0",
     "request-country": "^0.1.5"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.12"
   }
 }
