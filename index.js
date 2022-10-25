@@ -41,7 +41,7 @@ async function collectStats(type, packageName) {
 app.use(logger('dev'))
 
 app.get('/', (c) => {
-  if (process.env.NODE_ENV === 'production') {
+  if (c.env.NODE_ENV === 'production') {
     return c.redirect('https://github.com/pavi2410/PlayBadges')
   } else {
     return c.text('Hello World!')
@@ -93,10 +93,10 @@ app.get('/stats', async (c) => {
 })
 
 app.get('/badge/downloads', async (c) => {
-  const {id, pretty, style} = req.query
+  const {id, pretty, style} = c.req.query()
   const isPretty = pretty !== undefined
 
-  const countryCode = requestCountry.default(req, 'US')
+  const countryCode = requestCountry.default(c.req, 'US')
 
   try {
     const appDetails = await fetchAppDetails({appId: id, countryCode})
@@ -119,11 +119,11 @@ app.get('/badge/downloads', async (c) => {
 })
 
 app.get('/badge/ratings', async (c) => {
-  const {id, pretty, style} = req.query
+  const {id, pretty, style} = c.req.query()
 
   const isPretty = pretty !== undefined
 
-  const countryCode = requestCountry.default(req, 'US')
+  const countryCode = requestCountry.default(c.req, 'US')
 
   try {
     const appDetails = await fetchAppDetails({appId: id, countryCode})
@@ -142,8 +142,6 @@ app.get('/badge/ratings', async (c) => {
       status: `${e.name}: ${e.message}`,
     }))
     console.error('[Ratings]', `${e.name}: ${e.message}`)
-  } finally {
-
   }
 })
 
