@@ -4,7 +4,7 @@ import { default as gplayModule } from 'google-play-scraper'
 import * as requestCountry from 'request-country'
 import { MongoClient } from 'mongodb'
 import 'dotenv/config'
-import { makeBadge } from 'badge-maker'
+import badgen from 'badgen'
 
 const app = express()
 app.set('query parser', 'simple')
@@ -20,10 +20,10 @@ const playStoreLogoDataUri = 'data:image/svg+xml;base64,' + Buffer.from(playStor
 
 function genBadge(format) {
   if (!format.style) delete format.style
-  return makeBadge({
+  return badgen.badgen({
     color: '00cc00',
     labelColor: '0f0f23',
-    logo: playStoreLogoDataUri,
+    icon: playStoreLogoDataUri,
     ...format
   })
 }
@@ -66,7 +66,7 @@ app.get('/stats.json', async (req, res) => {
     // find top 10 apps ordered by count.all
     const docs = await db.collection("stats").find({}).sort({'count.all': -1}).limit(10).project({ _id: 0 }).toArray()
     const stats = Object.fromEntries(docs.map(doc => [doc.packageName, doc.count]))
-    
+
     res.json({ n, t, stats })
   } catch (e) {
     res.sendStatus(500)
@@ -107,7 +107,7 @@ app.get('/badge/downloads', async (req, res) => {
     res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Downloads',
-      message: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
+      status: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
       style
     }))
 
@@ -116,7 +116,7 @@ app.get('/badge/downloads', async (req, res) => {
     res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Downloads',
-      message: `${e.name}: ${e.message}`,
+      status: `${e.name}: ${e.message}`,
     }))
     console.error('[Downloads]', `${e.name}: ${e.message}`)
   }
@@ -124,7 +124,7 @@ app.get('/badge/downloads', async (req, res) => {
 
 app.get('/badge/ratings', async (req, res) => {
   const {id, pretty, style} = req.query
-  
+
   const isPretty = pretty !== undefined
 
   const countryCode = requestCountry.default(req, 'US')
@@ -134,7 +134,7 @@ app.get('/badge/ratings', async (req, res) => {
     res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Ratings',
-      message: isPretty ? makeStars(appDetails.score) : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
+      status: isPretty ? makeStars(appDetails.score) : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
       style
     }))
 
@@ -143,7 +143,7 @@ app.get('/badge/ratings', async (req, res) => {
     res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Ratings',
-      message: `${e.name}: ${e.message}`,
+      status: `${e.name}: ${e.message}`,
     }))
     console.error('[Ratings]', `${e.name}: ${e.message}`)
   }
