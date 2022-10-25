@@ -1,6 +1,6 @@
 import express from 'express'
 import logger from 'morgan'
-import { default as gplayModule } from 'google-play-scraper'
+import { fetchAppDetails } from './src/google-play-scraper.js'
 import * as requestCountry from 'request-country'
 import { MongoClient } from 'mongodb'
 import 'dotenv/config'
@@ -9,7 +9,6 @@ import badgen from 'badgen'
 const app = express()
 app.set('query parser', 'simple')
 app.disable('x-powered-by')
-const gplay = gplayModule.memoized({ maxAge: 1000 * 60 * 60 * 24 }) // 24 hrs
 if (!process.env.DB_URL) throw new Error('DB_URL not set')
 const mongo = new MongoClient(process.env.DB_URL);
 const db = mongo.db("playbadges");
@@ -103,7 +102,7 @@ app.get('/badge/downloads', async (req, res) => {
   const countryCode = requestCountry.default(req, 'US')
 
   try {
-    const appDetails = await gplay.app({appId: id, country: countryCode})
+    const appDetails = await fetchAppDetails({appId: id, countryCode})
     res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Downloads',
@@ -130,7 +129,7 @@ app.get('/badge/ratings', async (req, res) => {
   const countryCode = requestCountry.default(req, 'US')
 
   try {
-    const appDetails = await gplay.app({appId: id, country: countryCode})
+    const appDetails = await fetchAppDetails({appId: id, countryCode})
     res.set('Content-Type', 'image/svg+xml')
     res.send(genBadge({
       label: 'Ratings',

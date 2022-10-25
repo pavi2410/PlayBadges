@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch -r dotenv/config index.js"
+    "dev": "node --watch -r dotenv/config index.js",
+    "test": "node --test"
   },
   "keywords": [],
   "author": "",

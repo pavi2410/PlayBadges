@@ -10,8 +10,11 @@ const MAPPINGS = {
     ratings: [1, 2, 51, 2, 1],
 }
 
-export async function app({appId}) {
-    const response = await fetch(`https://play.google.com/store/apps/details?id=${appId}&gl=US`)
+export async function fetchAppDetails({appId, countryCode = 'US'}) {
+    const response = await fetch(`https://play.google.com/store/apps/details?id=${appId}&gl=${countryCode}`)
+
+    if (!response.ok) return null
+
     let html = await response.text()
 
     let json = html.match(/AF_initDataCallback\(({key: 'ds:5', .*?})\);<\/script>/)[1]
