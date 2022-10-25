@@ -6,8 +6,6 @@ import { MongoClient } from 'mongodb'
 import badgen from 'badgen'
 
 const app = new Hono.Hono()
-app.set('query parser', 'simple')
-app.disable('x-powered-by')
 if (!process.env.DB_URL) throw new Error('DB_URL not set')
 const mongo = new MongoClient(process.env.DB_URL);
 const db = mongo.db("playbadges");
