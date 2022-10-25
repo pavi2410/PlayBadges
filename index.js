@@ -1,12 +1,11 @@
-import express from 'express'
+import Hono from 'hono'
 import logger from 'morgan'
 import { fetchAppDetails } from './src/google-play-scraper.js'
 import * as requestCountry from 'request-country'
 import { MongoClient } from 'mongodb'
-import 'dotenv/config'
 import badgen from 'badgen'
 
-const app = express()
+const app = new Hono.Hono()
 app.set('query parser', 'simple')
 app.disable('x-powered-by')
 if (!process.env.DB_URL) throw new Error('DB_URL not set')
@@ -43,19 +42,19 @@ async function collectStats(type, packageName) {
 
 app.use(logger('dev'))
 
-app.get('/', (req, res) => {
+app.get('/', (c) => {
   if (process.env.NODE_ENV === 'production') {
-    res.redirect('https://github.com/pavi2410/PlayBadges')
+    return c.redirect('https://github.com/pavi2410/PlayBadges')
   } else {
-    res.end('Hello World!')
+    return c.text('Hello World!')
   }
 })
 
-app.get('/health', (req, res) => {
-  res.send('OK')
+app.get('/health', (c) => {
+  return c.text('OK')
 })
 
-app.get('/stats.json', async (req, res) => {
+app.get('/stats.json', async (c) => {
   try {
     // get an object of count of package names and sum of counts
     const [{ n, t }] = await db.collection("stats").aggregate([
@@ -66,28 +65,28 @@ app.get('/stats.json', async (req, res) => {
     const docs = await db.collection("stats").find({}).sort({'count.all': -1}).limit(10).project({ _id: 0 }).toArray()
     const stats = Object.fromEntries(docs.map(doc => [doc.packageName, doc.count]))
 
-    res.json({ n, t, stats })
+    return c.json({ n, t, stats })
   } catch (e) {
-    res.sendStatus(500)
+    c.status(500)
     console.error('[Stats.json]', `${e.name}: ${e.message}`)
   }
 })
 
-app.get('/stats', async (req, res) => {
+app.get('/stats', async (c) => {
   try {
     // get an object of count of package names and sum of counts
     const [{ n, t }] = await db.collection("stats").aggregate([
       { $group: { _id: null, n: { $sum: 1 }, t: { $sum: '$count.all' } } }
     ]).toArray()
 
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(genBadge({
+    c.header('Content-Type', 'image/svg+xml')
+    return c.body(genBadge({
       label: 'Stats',
       message: `${t} (${n} apps)`,
     }))
   } catch (e) {
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(genBadge({
+    c.header('Content-Type', 'image/svg+xml')
+    return c.body(genBadge({
       label: 'Stats',
       message: `${e.name}: ${e.message}`
     }))
@@ -95,7 +94,7 @@ app.get('/stats', async (req, res) => {
   }
 })
 
-app.get('/badge/downloads', async (req, res) => {
+app.get('/badge/downloads', async (c) => {
   const {id, pretty, style} = req.query
   const isPretty = pretty !== undefined
 
@@ -103,8 +102,8 @@ app.get('/badge/downloads', async (req, res) => {
 
   try {
     const appDetails = await fetchAppDetails({appId: id, countryCode})
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(genBadge({
+    c.header('Content-Type', 'image/svg+xml')
+    return c.body(genBadge({
       label: 'Downloads',
       status: `${isPretty ? appDetails.installs : appDetails.maxInstalls}`,
       style
@@ -112,8 +111,8 @@ app.get('/badge/downloads', async (req, res) => {
 
     await collectStats('downloads', id)
   } catch (e) {
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(genBadge({
+    c.header('Content-Type', 'image/svg+xml')
+    return c.body(genBadge({
       label: 'Downloads',
       status: `${e.name}: ${e.message}`,
     }))
@@ -121,7 +120,7 @@ app.get('/badge/downloads', async (req, res) => {
   }
 })
 
-app.get('/badge/ratings', async (req, res) => {
+app.get('/badge/ratings', async (c) => {
   const {id, pretty, style} = req.query
 
   const isPretty = pretty !== undefined
@@ -130,8 +129,8 @@ app.get('/badge/ratings', async (req, res) => {
 
   try {
     const appDetails = await fetchAppDetails({appId: id, countryCode})
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(genBadge({
+    c.header('Content-Type', 'image/svg+xml')
+    return c.body(genBadge({
       label: 'Ratings',
       status: isPretty ? makeStars(appDetails.score) : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
       style
@@ -139,18 +138,15 @@ app.get('/badge/ratings', async (req, res) => {
 
     await collectStats('ratings', id)
   } catch (e) {
-    res.set('Content-Type', 'image/svg+xml')
-    res.send(genBadge({
+    c.header('Content-Type', 'image/svg+xml')
+    return c.body(genBadge({
       label: 'Ratings',
       status: `${e.name}: ${e.message}`,
     }))
     console.error('[Ratings]', `${e.name}: ${e.message}`)
+  } finally {
+
   }
 })
 
-const port = process.env.PORT ?? 2410
-app.listen(port, () => {
-  console.log('using node', process.version)
-  console.log('startup time', performance.now(), 'ms')
-  console.log(`⚡ server started at http://localhost:${port}`);
-})
+export default app
