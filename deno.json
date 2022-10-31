@@ -2,6 +2,7 @@
   "tasks": {
     "dev": "deno run --watch --unstable -A dev.js",
     "build": "deno bundle index.js bundle.js",
-    "preview": "wrangler dev --local bundle.js"
+    "preview": "wrangler dev --local bundle.js",
+    "publish": "wrangler publish"
   }
 }

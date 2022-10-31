@@ -1,2 +1,3 @@
+name = "playbadges"
+main = "bundle.js"
 compatibility_date = "2022-10-24"
-main = "index.js"
