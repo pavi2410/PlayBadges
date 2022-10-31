@@ -1,12 +1,10 @@
-import { serve } from '@honojs/node-server'
+import { serve } from "https://deno.land/std@0.139.0/http/server.ts"
+import { logger } from "https://deno.land/x/hono@v2.3.2/middleware.ts"
 import app from './index.js'
 
-const port = process.env.PORT ?? 2410
+app.use('*', logger())
 
-console.log('using node', process.version)
 console.log('startup time', performance.now(), 'ms')
-console.log(`⚡ server started at http://localhost:${port}`);
-serve({
-    app: app.fetch,
-    port
+serve(app.fetch, {
+    port: 2410
 })
