@@ -30,24 +30,22 @@ export async function fullBadge(appDetails: AppDetails) {
 
     const markup = (
         <div
-            tw="flex items-center bg-white h-full w-full p-4 px-6 rounded-3xl border-4 border-black text-xl text-black"
+            tw="flex items-center bg-white h-full w-full px-3 rounded-3xl border-2 border-gray-200"
             style={{fontFamily: 'Inter, "Material Symbols Outlined"'}}>
-            <div tw="flex pr-6">
-                <img src={appDetails.icon} width={180} height={180} tw="rounded-2xl shadow-xl" alt="app icon"/>
-            </div>
-            <div tw="flex flex-1 flex-col h-full justify-between">
-                <p tw="text-3xl font-semibold">{appDetails.title}</p>
-                <p tw="text-sky-400 font-semibold">{appDetails.developer}</p>
-                <div tw="flex justify-between">
-                    <p tw="pr-6">
-                        <span>&#xf090;</span>
+            <img src={appDetails.icon} width={120} height={120} tw="rounded-2xl shadow-lg mr-4" alt="app icon"/>
+            <div tw="flex-1 flex flex-col h-full">
+                <p tw="text-xl font-semibold" style={{lineHeight:'20px'}}>{appDetails.title}</p>
+                <p tw="text-green-700 font-semibold">{appDetails.developer}</p>
+                <div tw="flex justify-between items-center mb-0">
+                    <p tw="flex items-center">
+                        <span tw="text-gray-500">&#xf090;</span>
                         <span
-                            tw="font-semibold">{compactNumberFormatter.format(parseFloat(appDetails.maxInstalls))}+</span>
+                            tw="font-semibold">{compactNumberFormatter.format(parseFloat(appDetails.maxInstalls))}</span>
                     </p>
                     <p>
                         <span tw="font-semibold">{appDetails.scoreText}</span>
                         <span tw="text-yellow-400">★</span>
-                        <span>({compactNumberFormatter.format(parseFloat(appDetails.ratings))}+)</span>
+                        <span tw="text-gray-500">({compactNumberFormatter.format(parseFloat(appDetails.ratings))})</span>
                     </p>
                 </div>
             </div>
@@ -56,8 +54,9 @@ export async function fullBadge(appDetails: AppDetails) {
 
     return await satori(markup,
         {
-            width: 560,
-            height: 240,
+            width: 350,
+            height: 150,
+            // debug: true,
             fonts: [
                 {
                     name: 'Inter',

@@ -5,25 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a03d5c91-39ad-4ff2-b3a5-d00a3bad0095" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/full-badge.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/google-play-scraper.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shields-badge.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/endpoints.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/scraper.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deno.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dev.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/google-play-scraper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_scraper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wrangler.toml" beforeDir="false" afterPath="$PROJECT_DIR$/wrangler.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/node.js.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/node.js.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/full-badge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/full-badge.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +98,7 @@
       <workItem from="1686161821277" duration="10212000" />
       <workItem from="1686391418841" duration="23450000" />
       <workItem from="1686417495200" duration="1385000" />
-      <workItem from="1686418901740" duration="4236000" />
+      <workItem from="1686418901740" duration="11265000" />
     </task>
     <servers />
   </component>
