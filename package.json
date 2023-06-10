@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "deploy": "wrangler deploy src/index.ts",
-    "dev": "wrangler dev --minify src/index.ts",
+    "deploy": "wrangler deploy --minify",
+    "dev": "wrangler dev --minify",
     "test": "vitest"
   },
   "keywords": [],
