@@ -4,11 +4,11 @@ Show off your Play Store™ app's downloads and rating in your repo
 
 ## Usage
 
-1. Full badge
+1. Card
 
-    This badge displays the app title, logo, developer name, downloads, and ratings along with the total reviews.
+    This card displays the app title, logo, developer name, downloads, and ratings along with the total reviews.
     
-    <img src="https://PlayBadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR" height=150 />
+    ![card][card]
 
     ```
     https://PlayBadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>
@@ -57,6 +57,6 @@ Show off your Play Store™ app's downloads and rating in your repo
 [ratings badge pretty]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&pretty
 [ratings badge style]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
 
-[full badge]: https://PlayBadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR
+[card]: https://PlayBadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR
 
 [stats badge]: https://PlayBadges.pavi2410.me/stats
