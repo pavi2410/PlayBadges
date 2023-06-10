@@ -1,0 +1,30 @@
+{
+  "name": "play-badges",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "wrangler deploy src/index.ts",
+    "dev": "wrangler dev --minify src/index.ts",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230518.0",
+    "@types/react": "^18.2.11",
+    "@types/react-dom": "^18.2.4",
+    "vitest": "^0.32.0",
+    "wrangler": "^3.1.0"
+  },
+  "dependencies": {
+    "badgen": "^3.2.2",
+    "hono": "^3.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "satori": "^0.10.1",
+    "yoga-wasm-web": "^0.3.3"
+  }
+}
