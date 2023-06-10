@@ -22,7 +22,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     | Pretty | ![Downloads badge pretty][downloads badge pretty] |
 
     ```
-    https://PlayBadges.pavi2410.me/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty][&style=...]
+    https://PlayBadges.pavi2410.me/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
 
 3. Get ratings badge
@@ -33,13 +33,12 @@ Show off your Play Store™ app's downloads and rating in your repo
     | Pretty | ![Ratings badge pretty][ratings badge pretty] |
 
     ```
-    https://PlayBadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty][&style=...]
+    https://PlayBadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
     
 ### Options
 
 - `pretty`: Shows the numbers prettily (default = disabled; add the flag to enable, remove to disable)
-- `style`: one of `plastic` (default), `flat`, `flat-square`, `for-the-badge`
 
 ## Credits
 
