@@ -4,25 +4,33 @@ Show off your Play Store™ app's downloads and rating in your repo
 
 ## Usage
 
-1. Get downloads badge
+1. Full badge
+
+    This badge displays the app title, logo, developer name, downloads, and ratings along with the total reviews.
+    
+    <img src="https://PlayBadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR" height=150 />
+
+    ```
+    https://PlayBadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>
+    ```
+
+2. Get downloads badge
 
     | config | badge |
     | --- | :---: |
     | Default | ![Downloads badge][downloads badge] |
     | Pretty | ![Downloads badge pretty][downloads badge pretty] |
-    | `for-the-badge` style | ![Downloads badge style][downloads badge style] |
 
     ```
     https://PlayBadges.pavi2410.me/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty][&style=...]
     ```
 
-2. Get ratings badge
+3. Get ratings badge
     
     | config | badge |
     | --- | :---: |
     | Default | ![Ratings badge][ratings badge] |
     | Pretty | ![Ratings badge pretty][ratings badge pretty] |
-    | `for-the-badge` style | ![Ratings badge style][ratings badge style] |
 
     ```
     https://PlayBadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty][&style=...]
@@ -48,5 +56,7 @@ Show off your Play Store™ app's downloads and rating in your repo
 [ratings badge]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR
 [ratings badge pretty]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&pretty
 [ratings badge style]: https://PlayBadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
+
+[full badge]: https://PlayBadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR
 
 [stats badge]: https://PlayBadges.pavi2410.me/stats
