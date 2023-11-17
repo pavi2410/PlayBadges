@@ -39,6 +39,7 @@ Show off your Play Store™ app's downloads and rating in your repo
 ### Options
 
 - `pretty`: Shows the numbers prettily (default = disabled; add the flag to enable, remove to disable)
+- `country`: Country code (default = `us` or wherever the request is coming from)
 
 ## Credits
 

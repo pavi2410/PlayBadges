@@ -2,7 +2,7 @@ import {Hono} from "hono"
 import {fetchAppDetails} from './google-play-scraper.js'
 import {fullBadge} from './full-badge.js'
 import {shieldsBadge} from "./shields-badge";
-import {compactNumberFormatter, makeStars} from "./utils";
+import {compactNumberFormatter, findCountryCode, makeStars} from "./utils";
 
 type Bindings = {
     NODE_ENV: string
@@ -71,11 +71,14 @@ app.get('/health', (c) => {
 // })
 
 
-// GET /badge/downloads?id=<appId>&pretty
+// GET /badge/downloads?id=<appId>&pretty&country=<countryCode>
 app.get('/badge/downloads', async (c) => {
-    const {id: appId, pretty} = c.req.query()
+    const {id: appId, pretty, country} = c.req.query()
     const isPretty = pretty !== undefined
-    const countryCode = (c.req.raw.cf?.country as string | undefined) ?? 'US'
+    const countryCode = findCountryCode(
+      country,
+      c.req.raw.cf?.country as string | undefined
+    );
 
     const appDetails = await fetchAppDetails(appId, countryCode)
 
@@ -90,11 +93,14 @@ app.get('/badge/downloads', async (c) => {
     }))
 })
 
-// GET /badge/ratings?id=<appId>&pretty
+// GET /badge/ratings?id=<appId>&pretty&country=<countryCode>
 app.get('/badge/ratings', async (c) => {
-    const {id: appId, pretty} = c.req.query()
+    const {id: appId, pretty, country} = c.req.query()
     const isPretty = pretty !== undefined
-    const countryCode = (c.req.raw.cf?.country as string | undefined) ?? 'US'
+    const countryCode = findCountryCode(
+      country,
+      c.req.raw.cf?.country as string | undefined
+    );    
 
     const appDetails = await fetchAppDetails(appId, countryCode)
 
@@ -109,11 +115,15 @@ app.get('/badge/ratings', async (c) => {
     }))
 })
 
-// GET /badge/full?id=<appId>
+// GET /badge/full?id=<appId>&country=<countryCode>
 app.get('/badge/full', async (c) => {
-    const {id: appId} = c.req.query()
+    const {id: appId, country} = c.req.query()
+    const countryCode = findCountryCode(
+      country,
+      c.req.raw.cf?.country as string | undefined
+    );
 
-    const appDetails = await fetchAppDetails(appId)
+    const appDetails = await fetchAppDetails(appId, countryCode)
 
     if (!appDetails) {
         return c.text('App not found', 404)

@@ -9,3 +9,18 @@ export function makeStars(score: number): string {
     const right = 5 - left
     return ('★').repeat(left) + ('☆').repeat(right)
 }
+
+export function findCountryCode(
+    country: string | undefined,
+    requestCountry: string | undefined
+): string {
+    if (country) {
+        return country;
+    }
+    
+    if (requestCountry) {
+        return requestCountry;
+    }
+    
+    return "US";
+}
