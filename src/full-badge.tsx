@@ -1,10 +1,9 @@
 import React from 'react'
-import satori, {init} from 'satori/wasm'
+import satori, { init } from 'satori/wasm'
 import initYoga from 'yoga-wasm-web'
-// @ts-ignore
 import yogaWasm from '../node_modules/yoga-wasm-web/dist/yoga.wasm'
-import {AppDetails} from "./google-play-scraper.js";
-import {compactNumberFormatter} from "./utils";
+import { AppDetails } from "./google-play-scraper.js";
+import { compactNumberFormatter } from "./utils";
 
 declare module 'react' {
     interface HTMLAttributes<T> extends DOMAttributes<T> {
@@ -31,22 +30,40 @@ export async function fullBadge(appDetails: AppDetails) {
     const markup = (
         <div
             tw="flex items-center bg-white h-full w-full px-3 rounded-3xl border-2 border-gray-200"
-            style={{fontFamily: 'Inter, "Material Symbols Outlined"'}}>
-            <img src={appDetails.icon} width={120} height={120} tw="rounded-2xl shadow-lg mr-4" alt="app icon"/>
+            style={{ fontFamily: 'Inter, "Material Symbols Outlined"' }}>
+            <img src={appDetails.icon!} width={120} height={120} tw="rounded-2xl shadow-lg mr-4" alt="app icon" />
             <div tw="flex-1 flex flex-col h-full">
-                <p tw="text-xl font-semibold" style={{lineHeight:'20px'}}>{appDetails.title}</p>
-                <p tw="text-green-700 font-semibold">{appDetails.developer}</p>
-                <div tw="flex justify-between items-center mb-0">
+                <div tw="flex-1 flex flex-col">
+                    <p tw="text-xl font-semibold leading-5">
+                        {appDetails.title}
+                    </p>
+                    <p tw="text-green-700 font-semibold">
+                        {appDetails.developer}
+                    </p>
+                </div>
+                <div tw="flex justify-between items-center">
                     <p tw="flex items-center">
-                        <span tw="text-gray-500">&#xf090;</span>
-                        <span
-                            tw="font-semibold">{compactNumberFormatter.format(parseFloat(appDetails.maxInstalls))}</span>
+                        <span tw="text-gray-500 text-xl leading-5">&#xf090;</span>
+                        <span tw="font-semibold">
+                            {compactNumberFormatter.format(Number(appDetails.maxInstalls))}
+                        </span>
                     </p>
-                    <p>
-                        <span tw="font-semibold">{appDetails.scoreText}</span>
-                        <span tw="text-yellow-400">★</span>
-                        <span tw="text-gray-500">({compactNumberFormatter.format(parseFloat(appDetails.ratings))})</span>
-                    </p>
+                    {!appDetails.ratings ? (
+                        <p>
+                            <span tw="text-yellow-400">★</span>
+                            <span tw="text-gray-500">N/A</span>
+                        </p>
+                    ) : (
+                        <p>
+                            <span tw="font-semibold">
+                                {appDetails.scoreText}
+                            </span>
+                            <span tw="text-yellow-500">★</span>
+                            <span tw="text-gray-500">
+                                ({compactNumberFormatter.format(Number(appDetails.ratings))})
+                            </span>
+                        </p>
+                    )}
                 </div>
             </div>
         </div>

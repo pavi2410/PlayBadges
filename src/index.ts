@@ -89,7 +89,7 @@ app.get('/badge/downloads', async (c) => {
     c.header('Content-Type', 'image/svg+xml')
     return c.body(shieldsBadge({
         label: 'Downloads',
-        status: `${isPretty ? compactNumberFormatter.format(parseFloat(appDetails.maxInstalls)) : appDetails.maxInstalls}`,
+        status: `${isPretty ? compactNumberFormatter.format(Number(appDetails.maxInstalls)) : appDetails.maxInstalls}`,
     }))
 })
 
@@ -111,7 +111,7 @@ app.get('/badge/ratings', async (c) => {
     c.header('Content-Type', 'image/svg+xml')
     return c.body(shieldsBadge({
         label: 'Ratings',
-        status: isPretty ? makeStars(parseFloat(appDetails.score)) : `${appDetails.scoreText}/5 (${appDetails.ratings})`,
+        status: isPretty ? makeStars(Number(appDetails.score)) : `${appDetails.scoreText ?? 0}/5 (${appDetails.ratings ?? 0})`,
     }))
 })
 

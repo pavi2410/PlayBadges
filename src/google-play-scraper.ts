@@ -5,14 +5,28 @@ const MAPPINGS = {
     installs: [1, 2, 13, 0],
     minInstalls: [1, 2, 13, 1],
     maxInstalls: [1, 2, 13, 2],
-    score: [1, 2, 51, 0, 1],
+    score: [1, 2, 51, 0, 0],
     scoreText: [1, 2, 51, 0, 0],
     ratings: [1, 2, 51, 2, 1],
     icon: [1, 2, 95, 0, 3, 2],
     developer: [1, 2, 68, 0],
+};
+
+type MAPPINGS_TYPE = {
+    title: string | null;
+    description: string | null;
+    summary: string | null;
+    installs: string | null;
+    minInstalls: number | null;
+    maxInstalls: number | null;
+    score: number | null;
+    scoreText: string | null;
+    ratings: number | null;
+    icon: string | null;
+    developer: string | null;
 }
 
-export type AppDetails = Record<keyof typeof MAPPINGS, string>
+export type AppDetails = MAPPINGS_TYPE;
 
 export async function fetchAppDetails(
     appId: string,
@@ -28,17 +42,25 @@ export async function fetchAppDetails(
     const html = await response.text()
     if (html.length == 0) return null
 
-    let jsonString = html.match(/AF_initDataCallback\(({key: 'ds:5', .*?})\);<\/script>/)?.[1]
+    const jsonString = html.match(/AF_initDataCallback\(({key: 'ds:5', .*?})\);<\/script>/)?.[1]
     if (!jsonString) return null
 
-    jsonString = jsonString.replace(/({|, )([a-z0-9A-Z_]+?):/g, '$1"$2":')
+    const cleanedJsonString = jsonString.replace(/({|, )([a-z0-9A-Z_]+?):/g, '$1"$2":')
         .replaceAll("'", '"');
 
-    let json = JSON.parse(jsonString)
-    json = json.data
+    const json = JSON.parse(cleanedJsonString)
+    const data = json.data
 
     return Object.fromEntries(
         Object.entries(MAPPINGS)
-            .map(([m, p]) => [m, p.reduce((j, k) => j[k], json)])
+            .map(([key, path]) => [key, getValue(data, path)])
     ) as AppDetails
+}
+
+function getValue(data: any, path: number[]): string | number | null {
+    for (const part of path) {
+        data = data[part]
+        if (!data) return null
+    }
+    return data
 }
