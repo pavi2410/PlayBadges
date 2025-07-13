@@ -4,6 +4,8 @@
 name: Test
 
 on:
+  schedule:
+    - cron: '0 18 * * *'  # Run daily at 11:30 PM IST (6:00 PM UTC)
   workflow_dispatch:
   push:
     branches: [ "main" ]
