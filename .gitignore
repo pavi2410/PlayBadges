@@ -105,3 +105,6 @@ dist
 
 bundle.js
 .DS_Store
+
+# Wrangler
+.wrangler/

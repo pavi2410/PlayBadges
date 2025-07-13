@@ -1,37 +1,31 @@
-import {describe, it, assert} from "vitest";
-
+import { describe, it, expect } from "vitest";
 import app from "../src/index.js";
+import { testApps } from "./fixtures.js";
 
-describe("endpoints", () => {
-    // it('should fetch stats', async () => {
-    //     const response = await app.request('http://localhost:2410/stats')
-    //     assert(response.ok)
-    //
-    //     const body = await response.text()
-    //     assertExists(body)
-    // })
+const BASE_URL = "http://127.0.0.1:8787";
 
+describe.each(testApps)("endpoints for $appTitle ($appId)", ({ appId, appTitle }) => {
     it('should fetch downloads', async () => {
-        const response = await app.request('http://localhost:2410/badge/downloads?id=com.whatsapp')
-        assert.isTrue(response.ok)
+        const response = await app.request(`${BASE_URL}/badge/downloads?id=${appId}`)
+        expect(response.ok).toBe(true)
 
         const body = await response.text()
-        assert.exists(body)
+        expect(body).toBeDefined()
     })
 
     it('should fetch ratings', async () => {
-        const response = await app.request('http://localhost:2410/badge/ratings?id=com.whatsapp')
-        assert.exists(response.ok)
+        const response = await app.request(`${BASE_URL}/badge/ratings?id=${appId}`)
+        expect(response.ok).toBe(true)
 
         const body = await response.text()
-        assert.exists(body)
+        expect(body).toBeDefined()
     })
 
     it('should fetch full badge', async () => {
-        const response = await app.request('http://localhost:2410/badge/full?id=com.whatsapp')
-        assert.isTrue(response.ok)
+        const response = await app.request(`${BASE_URL}/badge/full?id=${appId}`)
+        expect(response.ok).toBe(true)
 
         const body = await response.text()
-        assert.exists(body)
+        expect(body).toBeDefined()
     })
 })

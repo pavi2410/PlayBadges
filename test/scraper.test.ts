@@ -1,12 +1,9 @@
 import { describe, test, expect, assert } from "vitest";
 import { fetchAppDetails } from "../src/google-play-scraper.js";
+import { testApps } from "./fixtures.js";
 
 describe("scraper", () => {
-    test.each([
-        { appId: 'com.whatsapp', appTitle: 'WhatsApp Messenger' },
-        { appId: 'appinventor.ai_pavitragolchha.VR', appTitle: 'VR Compatibility Checker' },
-        { appId: 'me.pavi2410.folo', appTitle: 'Folo: Social Followers Tracker' },
-    ])('should fetch $appId', async ({ appId, appTitle }) => {
+    test.each(testApps)('should fetch $appId', async ({ appId, appTitle }) => {
         const appDetails = await fetchAppDetails(appId);
 
         expect(appDetails).not.toBeNull();
