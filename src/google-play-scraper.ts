@@ -1,3 +1,5 @@
+const DEBUG = process.env.NODE_ENV !== 'production';
+
 const MAPPINGS = {
     title: [1, 2, 0, 0],
     description: [1, 2, 72, 0, 1],
@@ -11,8 +13,6 @@ const MAPPINGS = {
     icon: [1, 2, 95, 0, 3, 2],
     developer: [1, 2, 68, 0],
 };
-
-const DEBUG = process.env.NODE_ENV !== 'production';
 
 type MAPPINGS_TYPE = {
     title: string | null;
@@ -49,7 +49,7 @@ export async function fetchAppDetails(
     if (DEBUG) {
         console.log(`jsonStrings for ${appId}:`, jsonStrings ? 'Found' : 'Not found')
     }
-    
+
     const jsonString = jsonStrings ? jsonStrings[1] : null
 
     if (!jsonString) {
@@ -59,8 +59,9 @@ export async function fetchAppDetails(
         return null
     }
 
-    const cleanedJsonString = jsonString.replace(/({|, )([a-z0-9A-Z_]+?):/g, '$1"$2":')
-        .replaceAll("'", '"');
+    const cleanedJsonString = doubleQuouteJsonStrings(
+        quoteJsonKeys(jsonString)
+    );
 
     if (DEBUG) {
         // Export debug files
@@ -90,4 +91,12 @@ function getValue(data: any, path: number[]): string | number | null {
         if (!data) return null
     }
     return data
+}
+
+function quoteJsonKeys(json: string): string {
+    return json.replace(/(?<={|, )(\w+)(?=:)/g, '"$1"');
+}
+
+function doubleQuouteJsonStrings(json: string): string {
+    return json.replace(/'(.+?)'/g, '"$1"');
 }
