@@ -25,41 +25,51 @@ const fonts = {
     }
 }
 
-export async function fullBadge(appDetails: AppDetails) {
+type Theme = 'light' | 'dark';
+
+function cva({ base, light, dark }: { base?: string; light: string; dark: string }, theme: Theme): string {
+    return [base, theme === 'dark' ? dark : light].filter(Boolean).join(' ')
+}
+
+export async function fullBadge(appDetails: AppDetails, theme: Theme) {
 
     const markup = (
         <div
-            tw="flex items-center bg-white h-full w-full px-3 rounded-3xl border-2 border-gray-200"
+            tw={cva({
+                base: "flex items-center h-full w-full px-3 rounded-3xl border-2",
+                light: "bg-white border-gray-100",
+                dark: "bg-black border-gray-800",
+            }, theme)}
             style={{ fontFamily: 'Inter, "Material Symbols Outlined"' }}>
             <img src={appDetails.icon!} width={120} height={120} tw="rounded-2xl shadow-lg mr-4" alt="app icon" />
             <div tw="flex-1 flex flex-col h-full">
                 <div tw="flex-1 flex flex-col">
-                    <p tw="text-xl font-semibold leading-5">
+                    <p tw={cva({ base: "text-xl font-semibold leading-5", light: "text-black", dark: "text-white" }, theme)}>
                         {appDetails.title}
                     </p>
-                    <p tw="text-green-700 font-semibold">
+                    <p tw={cva({ base: "font-semibold", light: "text-green-700", dark: "text-green-400" }, theme)}>
                         {appDetails.developer}
                     </p>
                 </div>
                 <div tw="flex justify-between items-center">
                     <p tw="flex items-center">
-                        <span tw="text-gray-500 text-xl leading-5">&#xf090;</span>
-                        <span tw="font-semibold">
+                        <span tw={cva({ base: "text-xl leading-5", light: "text-gray-500", dark: "text-gray-400" }, theme)}>&#xf090;</span>
+                        <span tw={cva({ base: "font-semibold", light: "text-black", dark: "text-white" }, theme)}>
                             {compactNumberFormatter.format(Number(appDetails.maxInstalls))}
                         </span>
                     </p>
                     {!appDetails.ratings ? (
                         <p>
-                            <span tw="text-yellow-400">★</span>
-                            <span tw="text-gray-500">N/A</span>
+                            <span tw={cva({ light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
+                            <span tw={cva({ light: "text-gray-500", dark: "text-gray-400" }, theme)}>N/A</span>
                         </p>
                     ) : (
                         <p>
-                            <span tw="font-semibold">
+                            <span tw={cva({ base: "font-semibold", light: "text-black", dark: "text-white" }, theme)}>
                                 {appDetails.scoreText}
                             </span>
-                            <span tw="text-yellow-500">★</span>
-                            <span tw="text-gray-500">
+                            <span tw={cva({ light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
+                            <span tw={cva({ light: "text-gray-500", dark: "text-gray-400" }, theme)}>
                                 ({compactNumberFormatter.format(Number(appDetails.ratings))})
                             </span>
                         </p>
