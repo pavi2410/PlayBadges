@@ -22,6 +22,23 @@ app.get('/health', (c) => {
     return c.text('OK')
 })
 
+// GET /app/details?id=<appId>
+app.get('/app/details', async (c) => {
+    const {id: appId, country} = c.req.query()
+    const countryCode = findCountryCode(
+      country,
+      c.req.raw.cf?.country as string | undefined
+    );
+
+    const appDetails = await fetchAppDetails(appId, countryCode)
+
+    if (!appDetails) {
+        return c.text('App not found', 404)
+    }
+
+    return c.json(appDetails)
+})
+
 // GET /badge/downloads?id=<appId>&pretty&country=<countryCode>
 app.get('/badge/downloads', async (c) => {
     const {id: appId, pretty, country} = c.req.query()
