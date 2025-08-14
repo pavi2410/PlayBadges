@@ -1,4 +1,4 @@
-# PlayBadges ![][stats badge]
+# PlayBadges
 
 Show off your Play Store™ app's downloads and rating in your repo
 
@@ -7,16 +7,31 @@ Show off your Play Store™ app's downloads and rating in your repo
 1. Card
 
     This card displays the app title, logo, developer name, downloads, and ratings along with the total reviews.
-    
-    [![PlayBadges Card VRCC][card vrcc]][card vrcc]
-    
-    [![PlayBadges Card Folo][card folo]][card folo]
+   
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR&theme=dark">
+      <img alt="PlayBadges Card VRCC" src="https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR">
+    </picture>
 
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo&theme=dark">
+      <img alt="PlayBadges Card Folo" src="https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo">
+    </picture>
+    
     ```
-    https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>
+    https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>[&theme=light|dark]
     ```
 
-2. Get downloads badge
+    To use with auto theming in markdown, use this snippet:
+
+    ```md
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>&theme=dark">
+      <img alt="PlayBadges Card Folo" src="https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>">
+    </picture>
+    ```
+
+3. Get downloads badge
 
     | config | badge |
     | --- | :---: |
@@ -27,7 +42,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     https://playbadges.pavi2410.me/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
 
-3. Get ratings badge
+4. Get ratings badge
     
     | config | badge |
     | --- | :---: |
@@ -38,7 +53,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     https://playbadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
 
-4. Get version badge
+5. Get version badge
     
     | config | badge |
     | --- | :---: |
@@ -48,7 +63,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     https://playbadges.pavi2410.me/badge/version?id=<YOUR APP'S PACKAGE NAME>[&fallback=<FALLBACK_TEXT>]
     ```
 
-5. Get app details as JSON
+6. Get app details as JSON
     
     Returns detailed information about the app in JSON format.
     
@@ -64,6 +79,7 @@ Show off your Play Store™ app's downloads and rating in your repo
 | `pretty` | Shows the numbers prettily | disabled | `&pretty` |
 | `fallback` | Fallback text for version badge when version is unavailable | `Varies` | `&fallback=Unknown` |
 | `country` | Country code | `us` or request origin | `&country=in` |
+| `theme` | Theme for the card | `light` | `&theme=dark` |
 
 ## Credits
 
@@ -86,5 +102,3 @@ Show off your Play Store™ app's downloads and rating in your repo
 
 [card vrcc]: https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR
 [card folo]: https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo
-
-[stats badge]: https://playbadges.pavi2410.me/stats
