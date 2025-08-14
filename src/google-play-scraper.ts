@@ -1,5 +1,3 @@
-const DEBUG = process.env.NODE_ENV !== 'production';
-
 const MAPPINGS = {
     title: [1, 2, 0, 0],
     description: [1, 2, 72, 0, 1],
@@ -46,35 +44,15 @@ export async function fetchAppDetails(
 
     const jsonStrings = html.match(/AF_initDataCallback\(({key: 'ds:[5]', .*?})\);<\/script>/)
 
-    if (DEBUG) {
-        console.log(`jsonStrings for ${appId}:`, jsonStrings ? 'Found' : 'Not found')
-    }
-
     const jsonString = jsonStrings ? jsonStrings[1] : null
 
     if (!jsonString) {
-        if (DEBUG) {
-            console.log(`No JSON string found for ${appId}`)
-        }
         return null
     }
 
     const cleanedJsonString = doubleQuouteJsonStrings(
         quoteJsonKeys(jsonString)
     );
-
-    if (DEBUG) {
-        // Export debug files
-        try {
-            const fs = await import('fs/promises')
-            await fs.mkdir('debug', { recursive: true })
-            await fs.writeFile(`debug/${appId}-raw.json`, jsonString)
-            await fs.writeFile(`debug/${appId}-cleaned.json`, cleanedJsonString)
-            console.log(`Exported debug files for ${appId} to debug/ folder`)
-        } catch (e) {
-            console.log(`Failed to write debug files for ${appId}:`, e)
-        }
-    }
 
     const json = JSON.parse(cleanedJsonString)
     const data = json.data

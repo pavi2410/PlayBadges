@@ -10,14 +10,6 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>({strict: false})
 
-// async function collectStats(type: string, packageName: string) {
-//     await db.collection("stats").updateOne(
-//         {packageName},
-//         {$inc: {['count.' + type]: 1, 'count.all': 1}},
-//         {upsert: true}
-//     )
-// }
-
 app.get('/', (c) => {
     if (c.env.NODE_ENV === 'production') {
         return c.redirect('https://github.com/pavi2410/PlayBadges')
@@ -29,47 +21,6 @@ app.get('/', (c) => {
 app.get('/health', (c) => {
     return c.text('OK')
 })
-
-// app.get('/stats.json', async (c) => {
-//     try {
-//         // get an object of count of package names and sum of counts
-//         const [{n, t}] = await db.collection("stats").aggregate([
-//             {$group: {_id: null, n: {$sum: 1}, t: {$sum: '$count.all'}}}
-//         ]).toArray()
-//
-//         // find top 10 apps ordered by count.all
-//         const docs = await db.collection("stats").find({}).sort({'count.all': -1}).limit(10).project({_id: 0}).toArray()
-//         const stats = Object.fromEntries(docs.map(doc => [doc.packageName, doc.count]))
-//
-//         return c.json({n, t, stats})
-//     } catch (e) {
-//         c.status(500)
-//         console.error('[Stats.json]', `${e.name}: ${e.message}`)
-//     }
-// })
-
-// app.get('/stats', async (c) => {
-//     try {
-//         // get an object of count of package names and sum of counts
-//         const [{n, t}] = await db.collection("stats").aggregate([
-//             {$group: {_id: null, n: {$sum: 1}, t: {$sum: '$count.all'}}}
-//         ]).toArray()
-//
-//         c.header('Content-Type', 'image/svg+xml')
-//         return c.body(fullBadge({
-//             label: 'Stats',
-//             message: `${t} (${n} apps)`,
-//         }))
-//     } catch (e) {
-//         c.header('Content-Type', 'image/svg+xml')
-//         return c.body(fullBadge({
-//             label: 'Stats',
-//             message: `${e.name}: ${e.message}`
-//         }))
-//         console.error('[Stats]', `${e.name}: ${e.message}`)
-//     }
-// })
-
 
 // GET /badge/downloads?id=<appId>&pretty&country=<countryCode>
 app.get('/badge/downloads', async (c) => {
