@@ -37,13 +37,33 @@ Show off your Play Store™ app's downloads and rating in your repo
     ```
     https://playbadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
+
+4. Get version badge
+    
+    | config | badge |
+    | --- | :---: |
+    | Default | [![PlayBadges Version][version badge]][version badge] |
+
+    ```
+    https://playbadges.pavi2410.me/badge/version?id=<YOUR APP'S PACKAGE NAME>[&fallback=<FALLBACK_TEXT>]
+    ```
+
+5. Get app details as JSON
+    
+    Returns detailed information about the app in JSON format.
+    
+    ```
+    https://playbadges.pavi2410.me/app/details?id=<YOUR APP'S PACKAGE NAME>
+    ```
     
 ### Options
 
 | Parameter | Description | Default | Example |
 | --- | --- | --- | --- |
-| `pretty` | Shows the numbers prettily | disabled | `?id=com.app&pretty` |
-| `country` | Country code | `us` or request origin | `?id=com.app&country=in` |
+| `id` | App package name | required | `?id=com.example.app` |
+| `pretty` | Shows the numbers prettily | disabled | `&pretty` |
+| `fallback` | Fallback text for version badge when version is unavailable | `Varies` | `&fallback=Unknown` |
+| `country` | Country code | `us` or request origin | `&country=in` |
 
 ## Credits
 
@@ -61,6 +81,8 @@ Show off your Play Store™ app's downloads and rating in your repo
 [ratings badge]: https://playbadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR
 [ratings badge pretty]: https://playbadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&pretty
 [ratings badge style]: https://playbadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
+
+[version badge]: https://playbadges.pavi2410.me/badge/version?id=appinventor.ai_pavitragolchha.VR
 
 [card vrcc]: https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR
 [card folo]: https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo

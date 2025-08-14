@@ -10,6 +10,7 @@ const MAPPINGS = {
     ratings: [1, 2, 51, 2, 1],
     icon: [1, 2, 95, 0, 3, 2],
     developer: [1, 2, 68, 0],
+    version: [1, 2, 140, 0, 0, 0]
 };
 
 type MAPPINGS_TYPE = {
@@ -24,6 +25,7 @@ type MAPPINGS_TYPE = {
     ratings: number | null;
     icon: string | null;
     developer: string | null;
+    version: string | null;
 }
 
 export type AppDetails = MAPPINGS_TYPE;
