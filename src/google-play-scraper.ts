@@ -5,12 +5,15 @@ const MAPPINGS = {
     installs: [1, 2, 13, 0],
     minInstalls: [1, 2, 13, 1],
     maxInstalls: [1, 2, 13, 2],
-    score: [1, 2, 51, 0, 0],
+    score: [1, 2, 51, 0, 1],
     scoreText: [1, 2, 51, 0, 0],
     ratings: [1, 2, 51, 2, 1],
     icon: [1, 2, 95, 0, 3, 2],
     developer: [1, 2, 68, 0],
-    version: [1, 2, 140, 0, 0, 0]
+    version: [1, 2, 140, 0, 0, 0],
+    recentChanges: [1, 2, 144, 1, 1],
+    released: [1, 2, 10, 1, 0],
+    updated: [1, 2, 145, 0, 1, 0],
 };
 
 type MAPPINGS_TYPE = {
@@ -26,6 +29,9 @@ type MAPPINGS_TYPE = {
     icon: string | null;
     developer: string | null;
     version: string | null;
+    recentChanges: string | null;
+    released: number | null;
+    updated: number | null;
 }
 
 export type AppDetails = MAPPINGS_TYPE;
