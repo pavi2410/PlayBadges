@@ -20,7 +20,7 @@ const MAPPINGS = {
     updated: [1, 2, 145, 0, 1, 0],
 };
 
-export const AppDetails = z.object({
+const AppDetails = z.object({
     title: z.string().nullable(),
     description: z.string().nullable(),
     summary: z.string().nullable(),
@@ -38,7 +38,7 @@ export const AppDetails = z.object({
     updated: z.number().nullable(),
 });
 
-type AppDetails = z.infer<typeof AppDetails>;
+export type AppDetails = z.infer<typeof AppDetails>;
 
 export async function fetchAppDetails(
     appId: string,

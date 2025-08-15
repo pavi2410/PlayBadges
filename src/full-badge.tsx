@@ -2,7 +2,7 @@ import React from 'react'
 import satori, { init } from 'satori/wasm'
 import initYoga from 'yoga-wasm-web'
 import yogaWasm from '../node_modules/yoga-wasm-web/dist/yoga.wasm'
-import { AppDetails } from "./google-play-scraper.js";
+import type { AppDetails } from "./google-play-scraper.js";
 import { compactNumberFormatter } from "./utils";
 
 declare module 'react' {
