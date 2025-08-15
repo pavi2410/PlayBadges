@@ -1,3 +1,7 @@
+import * as R from 'remeda';
+import * as z from 'zod';
+import { cleanJsonString } from './json-utils';
+
 const MAPPINGS = {
     title: [1, 2, 0, 0],
     description: [1, 2, 72, 0, 1],
@@ -16,25 +20,25 @@ const MAPPINGS = {
     updated: [1, 2, 145, 0, 1, 0],
 };
 
-type MAPPINGS_TYPE = {
-    title: string | null;
-    description: string | null;
-    summary: string | null;
-    installs: string | null;
-    minInstalls: number | null;
-    maxInstalls: number | null;
-    score: number | null;
-    scoreText: string | null;
-    ratings: number | null;
-    icon: string | null;
-    developer: string | null;
-    version: string | null;
-    recentChanges: string | null;
-    released: number | null;
-    updated: number | null;
-}
+export const AppDetails = z.object({
+    title: z.string().nullable(),
+    description: z.string().nullable(),
+    summary: z.string().nullable(),
+    installs: z.string().nullable(),
+    minInstalls: z.number().nullable(),
+    maxInstalls: z.number().nullable(),
+    score: z.number().nullable(),
+    scoreText: z.string().nullable(),
+    ratings: z.number().nullable(),
+    icon: z.string().nullable(),
+    developer: z.string().nullable(),
+    version: z.string().nullable(),
+    recentChanges: z.string().nullable(),
+    released: z.number().nullable(),
+    updated: z.number().nullable(),
+});
 
-export type AppDetails = MAPPINGS_TYPE;
+type AppDetails = z.infer<typeof AppDetails>;
 
 export async function fetchAppDetails(
     appId: string,
@@ -58,31 +62,25 @@ export async function fetchAppDetails(
         return null
     }
 
-    const cleanedJsonString = doubleQuouteJsonStrings(
-        quoteJsonKeys(jsonString)
-    );
+    const cleanedJsonString = cleanJsonString(jsonString);
 
     const json = JSON.parse(cleanedJsonString)
     const data = json.data
 
-    return Object.fromEntries(
-        Object.entries(MAPPINGS)
-            .map(([key, path]) => [key, getValue(data, path)])
-    ) as AppDetails
+    const extractedData = extractMappings(MAPPINGS, data)
+
+    return AppDetails.parse(extractedData);
 }
 
-function getValue(data: any, path: number[]): string | number | null {
+function extractMappings<F extends string>(mappings: Record<F, number[]>, data: object) {
+    const extracted = R.entries(mappings).map(([key, path]) => [key, extractPath(data, path)] as const);
+    return R.fromEntries(extracted);
+}
+
+function extractPath(data: any, path: number[]): string | number | null {
     for (const part of path) {
         data = data[part]
         if (!data) return null
     }
     return data
-}
-
-function quoteJsonKeys(json: string): string {
-    return json.replace(/(?<={|, )(\w+)(?=:)/g, '"$1"');
-}
-
-function doubleQuouteJsonStrings(json: string): string {
-    return json.replace(/'(.+?)'/g, '"$1"');
 }

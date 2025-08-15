@@ -25,7 +25,9 @@
     "hono": "^4.9.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "remeda": "^2.30.0",
     "satori": "^0.15.2",
-    "yoga-wasm-web": "^0.3.3"
+    "yoga-wasm-web": "^0.3.3",
+    "zod": "^4.0.17"
   }
 }
