@@ -9,25 +9,25 @@ Show off your Play Store™ app's downloads and rating in your repo
     This card displays the app title, logo, developer name, downloads, and ratings along with the total reviews.
    
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR&theme=dark">
-      <img alt="PlayBadges Card VRCC" src="https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR">
+      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.com/badge/full?id=appinventor.ai_pavitragolchha.VR&theme=dark">
+      <img alt="PlayBadges Card VRCC" src="https://playbadges.pavi2410.com/badge/full?id=appinventor.ai_pavitragolchha.VR">
     </picture>
 
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo&theme=dark">
-      <img alt="PlayBadges Card Folo" src="https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo">
+      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.com/badge/full?id=me.pavi2410.folo&theme=dark">
+      <img alt="PlayBadges Card Folo" src="https://playbadges.pavi2410.com/badge/full?id=me.pavi2410.folo">
     </picture>
     
     ```
-    https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>[&theme=light|dark]
+    https://playbadges.pavi2410.com/badge/full?id=<YOUR APP'S PACKAGE NAME>[&theme=light|dark]
     ```
 
     To use with auto theming in markdown, use this snippet:
 
     ```md
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>&theme=dark">
-      <img alt="PlayBadges Card Folo" src="https://playbadges.pavi2410.me/badge/full?id=<YOUR APP'S PACKAGE NAME>">
+      <source media="(prefers-color-scheme: dark)" srcset="https://playbadges.pavi2410.com/badge/full?id=<YOUR APP'S PACKAGE NAME>&theme=dark">
+      <img alt="PlayBadges Card Folo" src="https://playbadges.pavi2410.com/badge/full?id=<YOUR APP'S PACKAGE NAME>">
     </picture>
     ```
 
@@ -39,7 +39,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     | Pretty | [![PlayBadges Downloads Pretty][downloads badge pretty]][downloads badge pretty] |
 
     ```
-    https://playbadges.pavi2410.me/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty]
+    https://playbadges.pavi2410.com/badge/downloads?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
 
 4. Get ratings badge
@@ -50,7 +50,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     | Pretty | [![PlayBadges Ratings Pretty][ratings badge pretty]][ratings badge pretty] |
 
     ```
-    https://playbadges.pavi2410.me/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty]
+    https://playbadges.pavi2410.com/badge/ratings?id=<YOUR APP'S PACKAGE NAME>[&pretty]
     ```
 
 5. Get version badge
@@ -60,7 +60,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     | Default | [![PlayBadges Version][version badge]][version badge] |
 
     ```
-    https://playbadges.pavi2410.me/badge/version?id=<YOUR APP'S PACKAGE NAME>[&fallback=<FALLBACK_TEXT>]
+    https://playbadges.pavi2410.com/badge/version?id=<YOUR APP'S PACKAGE NAME>[&fallback=<FALLBACK_TEXT>]
     ```
 
 6. Get app details as JSON
@@ -68,7 +68,7 @@ Show off your Play Store™ app's downloads and rating in your repo
     Returns detailed information about the app in JSON format.
     
     ```
-    https://playbadges.pavi2410.me/app/details?id=<YOUR APP'S PACKAGE NAME>
+    https://playbadges.pavi2410.com/app/details?id=<YOUR APP'S PACKAGE NAME>
     ```
     
 ### Options
@@ -90,15 +90,15 @@ Show off your Play Store™ app's downloads and rating in your repo
 ## Created By
 [pavi2410](https://github.com/pavi2410)
 
-[downloads badge]: https://playbadges.pavi2410.me/badge/downloads?id=appinventor.ai_pavitragolchha.VR
-[downloads badge pretty]: https://playbadges.pavi2410.me/badge/downloads?id=appinventor.ai_pavitragolchha.VR&pretty
-[downloads badge style]: https://playbadges.pavi2410.me/badge/downloads?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
+[downloads badge]: https://playbadges.pavi2410.com/badge/downloads?id=appinventor.ai_pavitragolchha.VR
+[downloads badge pretty]: https://playbadges.pavi2410.com/badge/downloads?id=appinventor.ai_pavitragolchha.VR&pretty
+[downloads badge style]: https://playbadges.pavi2410.com/badge/downloads?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
 
-[ratings badge]: https://playbadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR
-[ratings badge pretty]: https://playbadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&pretty
-[ratings badge style]: https://playbadges.pavi2410.me/badge/ratings?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
+[ratings badge]: https://playbadges.pavi2410.com/badge/ratings?id=appinventor.ai_pavitragolchha.VR
+[ratings badge pretty]: https://playbadges.pavi2410.com/badge/ratings?id=appinventor.ai_pavitragolchha.VR&pretty
+[ratings badge style]: https://playbadges.pavi2410.com/badge/ratings?id=appinventor.ai_pavitragolchha.VR&style=for-the-badge
 
-[version badge]: https://playbadges.pavi2410.me/badge/version?id=appinventor.ai_pavitragolchha.VR
+[version badge]: https://playbadges.pavi2410.com/badge/version?id=appinventor.ai_pavitragolchha.VR
 
-[card vrcc]: https://playbadges.pavi2410.me/badge/full?id=appinventor.ai_pavitragolchha.VR
-[card folo]: https://playbadges.pavi2410.me/badge/full?id=me.pavi2410.folo
+[card vrcc]: https://playbadges.pavi2410.com/badge/full?id=appinventor.ai_pavitragolchha.VR
+[card folo]: https://playbadges.pavi2410.com/badge/full?id=me.pavi2410.folo
