@@ -15,6 +15,7 @@ const yoga = await initYoga(yogaWasm)
 init(yoga)
 
 // https://developers.google.com/fonts/docs/developer_api?apix_params=%7B%22family%22%3A%5B%22Inter%22%5D%7D
+// https://github.com/orioncactus/pretendard/blob/main/LICENSE
 const fonts = {
     Inter: {
         regular: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf",
@@ -22,6 +23,10 @@ const fonts = {
     },
     MaterialSymbolsOutlined: {
         regular: "https://fonts.gstatic.com/s/materialsymbolsoutlined/v115/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOembd5zrTgt.ttf",
+    },
+    Pretendard: {
+        regular: "https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff",
+        semibold: "https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff",
     }
 }
 
@@ -40,7 +45,7 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme) {
                 light: "bg-white border-gray-100",
                 dark: "bg-black border-gray-800",
             }, theme)}
-            style={{ fontFamily: 'Inter, "Material Symbols Outlined"' }}>
+            style={{ fontFamily: 'Pretendard, Inter, "Material Symbols Outlined"' }}>
             <img src={appDetails.icon!} width={120} height={120} tw="rounded-2xl shadow-lg mr-4" alt="app icon" />
             <div tw="flex-1 flex flex-col h-full">
                 <div tw="flex-1 flex flex-col">
@@ -79,31 +84,41 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme) {
         </div>
     )
 
-    return await satori(markup,
-        {
-            width: 350,
-            height: 150,
-            // debug: true,
-            fonts: [
-                {
-                    name: 'Inter',
-                    data: await fetch(fonts.Inter.regular).then(res => res.arrayBuffer()),
-                    weight: 400,
-                    style: 'normal',
-                },
-                {
-                    name: 'Inter',
-                    data: await fetch(fonts.Inter.semibold).then(res => res.arrayBuffer()),
-                    weight: 600,
-                    style: 'normal',
-                },
-                {
-                    name: 'Material Symbols Outlined',
-                    data: await fetch(fonts.MaterialSymbolsOutlined.regular).then(res => res.arrayBuffer()),
-                    weight: 400,
-                    style: 'normal',
-                }
-            ],
-        }
-    )
+    return await satori(markup, {
+        width: 350,
+        height: 150,
+        // debug: true,
+        fonts: [
+            {
+                name: 'Pretendard',
+                data: await fetch(fonts.Pretendard.regular).then(res => res.arrayBuffer()),
+                weight: 400,
+                style: 'normal',
+            },
+            {
+                name: 'Pretendard',
+                data: await fetch(fonts.Pretendard.semibold).then(res => res.arrayBuffer()),
+                weight: 600,
+                style: 'normal',
+            },
+            {
+                name: 'Inter',
+                data: await fetch(fonts.Inter.regular).then(res => res.arrayBuffer()),
+                weight: 400,
+                style: 'normal',
+            },
+            {
+                name: 'Inter',
+                data: await fetch(fonts.Inter.semibold).then(res => res.arrayBuffer()),
+                weight: 600,
+                style: 'normal',
+            },
+            {
+                name: 'Material Symbols Outlined',
+                data: await fetch(fonts.MaterialSymbolsOutlined.regular).then(res => res.arrayBuffer()),
+                weight: 400,
+                style: 'normal',
+            }
+        ],
+    });
 }
