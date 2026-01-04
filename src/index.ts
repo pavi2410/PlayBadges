@@ -39,9 +39,9 @@ app.get('/app/details', async (c) => {
     return c.json(appDetails)
 })
 
-// GET /badge/downloads?id=<appId>&pretty&country=<countryCode>
+// GET /badge/downloads?id=<appId>&pretty&country=<countryCode>&label=<label>
 app.get('/badge/downloads', async (c) => {
-    const {id: appId, pretty, country} = c.req.query()
+    const {id: appId, pretty, country, label} = c.req.query()
     const isPretty = pretty !== undefined
     const countryCode = findCountryCode(
       country,
@@ -56,14 +56,14 @@ app.get('/badge/downloads', async (c) => {
 
     c.header('Content-Type', 'image/svg+xml')
     return c.body(shieldsBadge({
-        label: 'Downloads',
+        label: label ?? 'Downloads',
         status: `${isPretty ? compactNumberFormatter.format(Number(appDetails.maxInstalls)) : appDetails.maxInstalls}`,
     }))
 })
 
-// GET /badge/ratings?id=<appId>&pretty&country=<countryCode>
+// GET /badge/ratings?id=<appId>&pretty&country=<countryCode>&label=<label>
 app.get('/badge/ratings', async (c) => {
-    const {id: appId, pretty, country} = c.req.query()
+    const {id: appId, pretty, country, label} = c.req.query()
     const isPretty = pretty !== undefined
     const countryCode = findCountryCode(
       country,
@@ -78,14 +78,14 @@ app.get('/badge/ratings', async (c) => {
 
     c.header('Content-Type', 'image/svg+xml')
     return c.body(shieldsBadge({
-        label: 'Ratings',
+        label: label ?? 'Ratings',
         status: isPretty ? makeStars(Number(appDetails.score)) : `${appDetails.scoreText ?? 0}/5 (${appDetails.ratings ?? 0})`,
     }))
 })
 
-// GET /badge/version?id=<appId>&fallback=<fallbackText>&country=<countryCode>
+// GET /badge/version?id=<appId>&fallback=<fallbackText>&country=<countryCode>&label=<label>
 app.get('/badge/version', async (c) => {
-    const {id: appId, fallback, country} = c.req.query()
+    const {id: appId, fallback, country, label} = c.req.query()
     const countryCode = findCountryCode(
       country,
       c.req.raw.cf?.country as string | undefined
@@ -99,7 +99,7 @@ app.get('/badge/version', async (c) => {
 
     c.header('Content-Type', 'image/svg+xml')
     return c.body(shieldsBadge({
-        label: 'Version',
+        label: label ?? 'Version',
         status: appDetails.version ?? (fallback ?? 'Varies'),
     }))
 })
