@@ -80,6 +80,7 @@ Show off your Play Store™ app's downloads and rating in your repo
 | `fallback` | Fallback text for version badge when version is unavailable | `Varies` | `&fallback=Unknown` |
 | `country` | Country code | `us` or request origin | `&country=in` |
 | `theme` | Theme for the card | `light` | `&theme=dark` |
+| `label` | Text to show in the badge | `Downloads`/`Ratings`/`Version` | `&label=Installs` |
 
 ## Credits
 
