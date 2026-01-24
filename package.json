@@ -14,18 +14,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250813.0",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "vitest": "^3.2.4",
-    "wrangler": "^4.29.1"
+    "@cloudflare/workers-types": "^4.20260124.0",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "vitest": "^4.0.18",
+    "wrangler": "^4.60.0"
   },
   "dependencies": {
     "badgen": "^3.2.3",
-    "hono": "^4.9.1",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "remeda": "^2.30.0",
+    "hono": "^4.11.5",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "remeda": "^2.33.4",
     "satori": "^0.15.2",
     "yoga-wasm-web": "^0.3.3",
     "zod": "^4.0.17"

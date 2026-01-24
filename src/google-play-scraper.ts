@@ -15,6 +15,7 @@ const MAPPINGS = {
     icon: [1, 2, 95, 0, 3, 2],
     developer: [1, 2, 68, 0],
     version: [1, 2, 140, 0, 0, 0],
+    version2: [1, 2, -1, 141, 0, 0, 0],
     recentChanges: [1, 2, 144, 1, 1],
     released: [1, 2, 10, 1, 0],
     updated: [1, 2, 145, 0, 1, 0],
@@ -69,6 +70,8 @@ export async function fetchAppDetails(
 
     const extractedData = extractMappings(MAPPINGS, data)
 
+    extractedData.version = extractedData.version || extractedData.version2
+
     return AppDetails.parse(extractedData);
 }
 
@@ -79,7 +82,7 @@ function extractMappings<F extends string>(mappings: Record<F, number[]>, data: 
 
 function extractPath(data: any, path: number[]): string | number | null {
     for (const part of path) {
-        data = data[part]
+        data = part < 0 ? data[data.length + part] : data[part]
         if (!data) return null
     }
     return data
