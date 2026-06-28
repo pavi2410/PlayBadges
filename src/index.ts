@@ -18,7 +18,10 @@ app.get('/', (c) => {
 })
 
 app.get('/health', (c) => {
-    return c.text('OK')
+  return c.json({
+    status: 'ok',
+    renderer: 'takumi',
+  })
 })
 
 // GET /app/details?id=<appId>&country=<countryCode>
