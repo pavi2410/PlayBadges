@@ -1,7 +1,7 @@
 import React from 'react'
-import satori from 'satori/wasm'
+import { renderSvg } from 'takumi-js'
 import type { AppDetails } from "./google-play-scraper.js";
-import { ensureSatori } from "./satori-init.js";
+import { getBadgeFonts } from "./badge-fonts.js";
 import { compactNumberFormatter } from "./utils";
 
 declare module 'react' {
@@ -10,112 +10,108 @@ declare module 'react' {
     }
 }
 
-// https://developers.google.com/fonts/docs/developer_api?apix_params=%7B%22family%22%3A%5B%22Inter%22%5D%7D
-// https://github.com/orioncactus/pretendard/blob/main/LICENSE
-const fonts = {
-    Inter: {
-        regular: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZhrib2Bg-4.ttf",
-        semibold: "https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZhrib2Bg-4.ttf",
-    },
-    MaterialSymbolsOutlined: {
-        regular: "https://fonts.gstatic.com/s/materialsymbolsoutlined/v115/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOembd5zrTgt.ttf",
-    },
-    Pretendard: {
-        regular: "https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff",
-        semibold: "https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff",
-    }
-}
-
 type Theme = 'light' | 'dark';
+
+const BADGE_WIDTH = 350
+const BADGE_HEIGHT = 150
+const ICON_SIZE = 120
 
 function cva({ base, light, dark }: { base?: string; light: string; dark: string }, theme: Theme): string {
     return [base, theme === 'dark' ? dark : light].filter(Boolean).join(' ')
 }
 
-export async function fullBadge(appDetails: AppDetails, theme: Theme) {
-    await ensureSatori()
+function debugOutline(enabled: boolean, color: string) {
+    return enabled ? `border border-${color}-500` : ''
+}
 
+export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = false) {
     const markup = (
         <div
-            tw={cva({
-                base: "flex items-center h-full w-full px-3 rounded-3xl border-2",
-                light: "bg-white border-gray-100",
-                dark: "bg-black border-gray-800",
-            }, theme)}
+            tw={[
+                cva({
+                    base: "flex flex-row items-center box-border w-full h-full px-3 rounded-3xl border-2",
+                    light: "bg-white border-gray-100",
+                    dark: "bg-black border-gray-800",
+                }, theme),
+                debugOutline(debug, 'purple'),
+            ].filter(Boolean).join(' ')}
             style={{ fontFamily: 'Pretendard, Inter, "Material Symbols Outlined"' }}>
-            <img src={appDetails.icon!} width={120} height={120} tw="rounded-2xl shadow-lg mr-4" alt="app icon" />
-            <div tw="flex-1 flex flex-col h-full">
-                <div tw="flex-1 flex flex-col">
-                    <p tw={cva({ base: "text-xl font-semibold leading-5", light: "text-black", dark: "text-white" }, theme)}>
+            <img
+                src={appDetails.icon!}
+                width={ICON_SIZE}
+                height={ICON_SIZE}
+                tw={["flex shrink-0 rounded-2xl shadow-lg mr-4", debugOutline(debug, 'orange')].filter(Boolean).join(' ')}
+                alt="app icon"
+            />
+            <div
+                tw={[
+                    "flex flex-1 flex-col justify-between h-[120px] min-w-0 overflow-hidden py-1",
+                    debugOutline(debug, 'red'),
+                ].filter(Boolean).join(' ')}>
+                <div
+                    tw={[
+                        "flex flex-col gap-1 min-h-0 overflow-hidden",
+                        debugOutline(debug, 'blue'),
+                    ].filter(Boolean).join(' ')}>
+                    <div
+                        tw={cva({
+                            base: "flex text-xl font-semibold leading-tight",
+                            light: "text-black",
+                            dark: "text-white",
+                        }, theme)}>
                         {appDetails.title}
-                    </p>
-                    <p tw={cva({ base: "font-semibold", light: "text-green-700", dark: "text-green-400" }, theme)}>
+                    </div>
+                    <div
+                        tw={cva({
+                            base: "flex font-semibold",
+                            light: "text-green-700",
+                            dark: "text-green-400",
+                        }, theme)}>
                         {appDetails.developer}
-                    </p>
+                    </div>
                 </div>
-                <div tw="flex justify-between items-center">
-                    <p tw="flex items-center">
-                        <span tw={cva({ base: "text-xl leading-5", light: "text-gray-500", dark: "text-gray-400" }, theme)}>&#xf090;</span>
-                        <span tw={cva({ base: "font-semibold", light: "text-black", dark: "text-white" }, theme)}>
+                <div
+                    tw={[
+                        "flex flex-row items-center justify-between w-full shrink-0",
+                        debugOutline(debug, 'green'),
+                    ].filter(Boolean).join(' ')}>
+                    <div tw="flex flex-row items-center gap-1">
+                        <span
+                            tw={cva({
+                                base: "flex items-center justify-center text-xl leading-none w-5",
+                                light: "text-gray-500",
+                                dark: "text-gray-400",
+                            }, theme)}>
+                            &#xf090;
+                        </span>
+                        <span tw={cva({ base: "flex font-semibold", light: "text-black", dark: "text-white" }, theme)}>
                             {compactNumberFormatter.format(Number(appDetails.maxInstalls))}
                         </span>
-                    </p>
+                    </div>
                     {!appDetails.ratings ? (
-                        <p>
-                            <span tw={cva({ light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
-                            <span tw={cva({ light: "text-gray-500", dark: "text-gray-400" }, theme)}>N/A</span>
-                        </p>
+                        <div tw="flex flex-row items-center gap-1">
+                            <span tw={cva({ base: "flex", light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
+                            <span tw={cva({ base: "flex", light: "text-gray-500", dark: "text-gray-400" }, theme)}>N/A</span>
+                        </div>
                     ) : (
-                        <p>
-                            <span tw={cva({ base: "font-semibold", light: "text-black", dark: "text-white" }, theme)}>
+                        <div tw="flex flex-row items-center gap-1">
+                            <span tw={cva({ base: "flex font-semibold", light: "text-black", dark: "text-white" }, theme)}>
                                 {appDetails.scoreText}
                             </span>
-                            <span tw={cva({ light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
-                            <span tw={cva({ light: "text-gray-500", dark: "text-gray-400" }, theme)}>
+                            <span tw={cva({ base: "flex", light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
+                            <span tw={cva({ base: "flex", light: "text-gray-500", dark: "text-gray-400" }, theme)}>
                                 ({compactNumberFormatter.format(Number(appDetails.ratings))})
                             </span>
-                        </p>
+                        </div>
                     )}
                 </div>
             </div>
         </div>
     )
 
-    return await satori(markup, {
-        width: 350,
-        height: 150,
-        // debug: true,
-        fonts: [
-            {
-                name: 'Pretendard',
-                data: await fetch(fonts.Pretendard.regular).then(res => res.arrayBuffer()),
-                weight: 400,
-                style: 'normal',
-            },
-            {
-                name: 'Pretendard',
-                data: await fetch(fonts.Pretendard.semibold).then(res => res.arrayBuffer()),
-                weight: 600,
-                style: 'normal',
-            },
-            {
-                name: 'Inter',
-                data: await fetch(fonts.Inter.regular).then(res => res.arrayBuffer()),
-                weight: 400,
-                style: 'normal',
-            },
-            {
-                name: 'Inter',
-                data: await fetch(fonts.Inter.semibold).then(res => res.arrayBuffer()),
-                weight: 600,
-                style: 'normal',
-            },
-            {
-                name: 'Material Symbols Outlined',
-                data: await fetch(fonts.MaterialSymbolsOutlined.regular).then(res => res.arrayBuffer()),
-                weight: 400,
-                style: 'normal',
-            }
-        ],
-    });
+    return renderSvg(markup, {
+        width: BADGE_WIDTH,
+        height: BADGE_HEIGHT,
+        fonts: await getBadgeFonts(),
+    })
 }

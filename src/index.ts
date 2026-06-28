@@ -105,7 +105,7 @@ app.get('/badge/version', async (c) => {
 
 // GET /badge/full?id=<appId>&country=<countryCode>&theme=<light|dark>
 app.get('/badge/full', async (c) => {
-    const {id: appId, country, theme} = c.req.query()
+    const {id: appId, country, theme, debug} = c.req.query()
     const countryCode = findCountryCode(
       country,
       c.req.raw.cf?.country as string | undefined
@@ -120,7 +120,7 @@ app.get('/badge/full', async (c) => {
 
     const { fullBadge } = await import('./full-badge.js')
     c.header('Content-Type', 'image/svg+xml')
-    return c.body(await fullBadge(appDetails, resolvedTheme))
+    return c.body(await fullBadge(appDetails, resolvedTheme, debug === '1' || debug === 'true'))
 })
 
 export default app

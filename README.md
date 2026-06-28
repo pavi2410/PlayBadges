@@ -84,7 +84,7 @@ Show off your Play Store™ app's downloads and rating in your repo
 
 ## Credits
 
-- https://github.com/vercel/satori
+- https://github.com/kane50613/takumi
 - https://github.com/facundoolano/google-play-scraper
 - https://shields.io
 
