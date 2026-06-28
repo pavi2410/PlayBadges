@@ -7,7 +7,8 @@
   "main": "index.js",
   "scripts": {
     "deploy": "wrangler deploy --minify",
-    "dev": "wrangler dev --minify",
+    "dev": "bun --watch src/dev.ts",
+    "dev:worker": "wrangler dev --minify",
     "test": "vitest run"
   },
   "keywords": [],
@@ -15,6 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260628.1",
+    "@hono/node-server": "^2.0.6",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "vitest": "^4.0.18",
