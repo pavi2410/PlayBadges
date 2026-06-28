@@ -24,6 +24,14 @@ function debugOutline(enabled: boolean, color: string) {
     return enabled ? `border border-${color}-500` : ''
 }
 
+function starIcon(theme: Theme) {
+    return cva({
+        base: "flex items-center justify-center text-base font-semibold leading-none shrink-0",
+        light: "text-yellow-500",
+        dark: "text-yellow-400",
+    }, theme)
+}
+
 export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = false) {
     const markup = (
         <div
@@ -90,7 +98,7 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = fa
                     </div>
                     {!appDetails.ratings ? (
                         <div tw="flex flex-row items-center gap-1">
-                            <span tw={cva({ base: "flex", light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
+                            <span tw={starIcon(theme)} style={{ fontFamily: 'Pretendard, Inter' }}>★</span>
                             <span tw={cva({ base: "flex", light: "text-gray-500", dark: "text-gray-400" }, theme)}>N/A</span>
                         </div>
                     ) : (
@@ -98,7 +106,7 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = fa
                             <span tw={cva({ base: "flex font-semibold", light: "text-black", dark: "text-white" }, theme)}>
                                 {appDetails.scoreText}
                             </span>
-                            <span tw={cva({ base: "flex", light: "text-yellow-500", dark: "text-yellow-400" }, theme)}>★</span>
+                            <span tw={starIcon(theme)} style={{ fontFamily: 'Pretendard, Inter' }}>★</span>
                             <span tw={cva({ base: "flex", light: "text-gray-500", dark: "text-gray-400" }, theme)}>
                                 ({compactNumberFormatter.format(Number(appDetails.ratings))})
                             </span>
@@ -113,5 +121,6 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = fa
         width: BADGE_WIDTH,
         height: BADGE_HEIGHT,
         fonts: await getBadgeFonts(),
+        emoji: 'from-font',
     })
 }
