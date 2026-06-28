@@ -1,6 +1,5 @@
 import {Hono} from "hono"
 import {fetchAppDetails} from './google-play-scraper.js'
-import {fullBadge} from './full-badge.js'
 import {shieldsBadge} from "./shields-badge";
 import {compactNumberFormatter, findCountryCode, makeStars} from "./utils";
 
@@ -119,6 +118,7 @@ app.get('/badge/full', async (c) => {
         return c.text('App not found', 404)
     }
 
+    const { fullBadge } = await import('./full-badge.js')
     c.header('Content-Type', 'image/svg+xml')
     return c.body(await fullBadge(appDetails, resolvedTheme))
 })

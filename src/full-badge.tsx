@@ -1,8 +1,7 @@
 import React from 'react'
-import satori, { init } from 'satori/wasm'
-import initYoga from 'yoga-wasm-web'
-import yogaWasm from '../node_modules/yoga-wasm-web/dist/yoga.wasm'
+import satori from 'satori/wasm'
 import type { AppDetails } from "./google-play-scraper.js";
+import { ensureSatori } from "./satori-init.js";
 import { compactNumberFormatter } from "./utils";
 
 declare module 'react' {
@@ -10,9 +9,6 @@ declare module 'react' {
         tw?: string;
     }
 }
-
-const yoga = await initYoga(yogaWasm)
-init(yoga)
 
 // https://developers.google.com/fonts/docs/developer_api?apix_params=%7B%22family%22%3A%5B%22Inter%22%5D%7D
 // https://github.com/orioncactus/pretendard/blob/main/LICENSE
@@ -37,6 +33,7 @@ function cva({ base, light, dark }: { base?: string; light: string; dark: string
 }
 
 export async function fullBadge(appDetails: AppDetails, theme: Theme) {
+    await ensureSatori()
 
     const markup = (
         <div

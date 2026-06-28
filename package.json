@@ -14,11 +14,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260124.0",
+    "@cloudflare/workers-types": "^4.20260628.1",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
     "vitest": "^4.0.18",
-    "wrangler": "^4.60.0"
+    "wrangler": "^4.105.0"
   },
   "dependencies": {
     "badgen": "^3.2.3",
