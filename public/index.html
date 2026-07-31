@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlayBadges — Play Store badge generator</title>
+  <meta name="description" content="Generate live Google Play Store download, rating, version, and app card badges for Markdown and READMEs.">
+  <meta name="color-scheme" content="light dark">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --surface-2: #f1f3f5;
+      --text: #12141a;
+      --muted: #5b6472;
+      --faint: #8a93a1;
+      --border: #d9dee7;
+      --accent: #0f9d58;
+      --accent-ink: #ffffff;
+      --primary: #2563eb;
+      --primary-ink: #ffffff;
+      --radius: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #181818;
+        --surface: #181818;
+        --surface-2: #202020;
+        --text: #f4f4f5;
+        --muted: #a3a3a3;
+        --faint: #727272;
+        --border: #303030;
+        --accent: #45ad6b;
+        --accent-ink: #06110a;
+        --primary: #3b82f6;
+        --primary-ink: #ffffff;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.92em;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 20px 0 40px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 28px;
+      color: #fff;
+    }
+    .brand-play,
+    .brand-badges {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+    }
+    .brand-play {
+      gap: 6px;
+      padding: 0 9px 0 8px;
+      background: #555;
+    }
+    .brand-badges {
+      padding: 0 9px;
+      background: var(--accent);
+      color: #fff;
+    }
+    .nav-link {
+      margin-left: auto;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .nav-link:hover { color: var(--text); }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+    .lede {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.85fr) minmax(420px, 1.35fr);
+      gap: 28px;
+      margin-top: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .card-h {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .card-h .live { color: var(--faint); font-weight: 500; }
+    .card-h .meta { color: var(--faint); font-weight: 500; }
+    .card-b { padding: 14px; }
+
+    .field { margin-bottom: 18px; }
+    .field:last-child { margin-bottom: 0; }
+    label, .label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 650;
+      color: var(--muted);
+    }
+    .hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--faint);
+    }
+    input[type="text"], select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 13px;
+      line-height: 18px;
+      outline: none;
+    }
+    input[type="text"]:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .pill {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 12px;
+      line-height: 16px;
+      cursor: pointer;
+    }
+    .pill[aria-pressed="true"] {
+      background: var(--surface-2);
+      border-color: var(--faint);
+      color: var(--text);
+    }
+    @media (prefers-color-scheme: dark) {
+      .pill[aria-pressed="true"] {
+        background: #303030;
+        border-color: #3d3d3d;
+        color: #fafafa;
+      }
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+      user-select: none;
+      cursor: pointer;
+    }
+    .check input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .section-title h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .preview-shell {
+      min-height: 230px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      overflow: auto;
+    }
+    .preview-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .preview-option { min-width: 0; }
+    .preview-label {
+      font-size: 12px;
+      color: var(--faint);
+      margin-bottom: 8px;
+    }
+    .preview-img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .preview-grid .preview-img {
+      width: 100%;
+      aspect-ratio: 7 / 3;
+      object-fit: contain;
+    }
+
+    .output {
+      margin: 0;
+      padding: 12px;
+      max-height: 132px;
+      overflow: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      border-radius: 6px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 17px;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .actions .hint { margin: 0; flex: 1; }
+    .primary {
+      appearance: none;
+      border: 0;
+      background: var(--primary);
+      color: var(--primary-ink);
+      border-radius: 6px;
+      padding: 7px 10px;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 650;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .primary:hover { filter: brightness(1.08); }
+    .primary:disabled { opacity: 0.6; cursor: default; }
+
+    .footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--faint);
+      font-size: 12px;
+    }
+    .footer a { color: var(--muted); text-decoration: none; }
+    .footer a:hover { color: var(--text); }
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-links span {
+      color: var(--faint);
+      line-height: 1;
+    }
+
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; }
+      .preview-grid { grid-template-columns: 1fr; }
+      h1 { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="importmap">
+  {
+    "imports": {
+      "preact": "https://esm.sh/preact@10.26.5",
+      "preact/": "https://esm.sh/preact@10.26.5/",
+      "htm/preact": "https://esm.sh/htm@3.1.1/preact?external=preact"
+    }
+  }
+  </script>
+  <script type="module">
+    import { render } from "preact";
+    import { useMemo, useState } from "preact/hooks";
+    import { html } from "htm/preact";
+
+    const ORIGIN = window.location.origin.replace(/\/$/, "");
+
+    const BADGE_LABELS = {
+      full: "App card",
+      downloads: "Downloads",
+      ratings: "Rating",
+      version: "Version",
+    };
+
+    const COUNTRIES = [
+      { value: "us", label: "United States" },
+      { value: "in", label: "India" },
+      { value: "gb", label: "United Kingdom" },
+      { value: "de", label: "Germany" },
+      { value: "jp", label: "Japan" },
+      { value: "br", label: "Brazil" },
+      { value: "kr", label: "South Korea" },
+    ];
+
+    function PlayMark() {
+      return html`
+        <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M4 3.4v13.2c0 .9 1 1.4 1.7.9l10.2-6.6c.7-.4.7-1.4 0-1.8L5.7 2.5C5 2 4 2.5 4 3.4Z" fill="currentColor" />
+        </svg>
+      `;
+    }
+
+    function CopyIcon() {
+      return html`
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" stroke="currentColor"></rect>
+          <path d="M10.5 5.5V3A1.5 1.5 0 0 0 9 1.5H3A1.5 1.5 0 0 0 1.5 3v6A1.5 1.5 0 0 0 3 10.5h2.5" stroke="currentColor"></path>
+        </svg>
+      `;
+    }
+
+    function Pills({ options, value, onChange, ariaLabel }) {
+      return html`
+        <div class="pills" role="group" aria-label=${ariaLabel}>
+          ${options.map((option) => html`
+            <button
+              key=${option.value}
+              class="pill"
+              type="button"
+              data-value=${option.value}
+              aria-pressed=${String(value === option.value)}
+              onClick=${() => onChange(option.value)}
+            >
+              ${option.label}
+            </button>
+          `)}
+        </div>
+      `;
+    }
+
+    function buildBadgeUrl({ packageId, badgeType, country, pretty, customLabel, fallback, theme }) {
+      const id = packageId.trim() || "me.pavi2410.folo";
+      const params = new URLSearchParams();
+      params.set("id", id);
+      if (country && country !== "us") params.set("country", country);
+
+      if (badgeType === "full") {
+        params.set("theme", theme === "dark" ? "dark" : "light");
+      } else {
+        if (badgeType !== "version" && pretty) params.set("pretty", "");
+        if (customLabel.trim()) params.set("label", customLabel.trim());
+        if (badgeType === "version" && fallback.trim()) params.set("fallback", fallback.trim());
+      }
+
+      const query = params.toString().replace(/=(?=&|$)/g, "");
+      return ORIGIN + "/badge/" + badgeType + "?" + query;
+    }
+
+    function buildMarkdown({ badgeType, badgeTheme, packageId, lightUrl, darkUrl, directUrl }) {
+      const id = packageId.trim() || "me.pavi2410.folo";
+      const alt = badgeType === "full"
+        ? "PlayBadges card for " + id
+        : BADGE_LABELS[badgeType] + " for " + id;
+
+      if (badgeType === "full" && badgeTheme === "auto") {
+        return [
+          "<picture>",
+          '  <source media="(prefers-color-scheme: dark)" srcset="' + darkUrl + '">',
+          '  <img alt="' + alt + '" src="' + lightUrl + '">',
+          "</picture>",
+        ].join("\n");
+      }
+
+      return "![" + alt + "](" + directUrl + ")";
+    }
+
+    function Preview({ badgeType, badgeTheme, lightUrl, darkUrl, directUrl }) {
+      if (badgeType === "full" && badgeTheme === "auto") {
+        return html`
+          <div class="preview-grid">
+            <div class="preview-option">
+              <div class="preview-label">Light</div>
+              <img class="preview-img" alt="Light theme preview" src=${lightUrl} loading="lazy" />
+            </div>
+            <div class="preview-option">
+              <div class="preview-label">Dark</div>
+              <img class="preview-img" alt="Dark theme preview" src=${darkUrl} loading="lazy" />
+            </div>
+          </div>
+        `;
+      }
+
+      const url = badgeType === "full"
+        ? (badgeTheme === "dark" ? darkUrl : lightUrl)
+        : directUrl;
+
+      return html`
+        <img class="preview-img" alt="Badge preview" src=${url} loading="lazy" />
+      `;
+    }
+
+    function App() {
+      const [packageId, setPackageId] = useState("me.pavi2410.folo");
+      const [badgeType, setBadgeType] = useState("full");
+      const [badgeTheme, setBadgeTheme] = useState("auto");
+      const [outputType, setOutputType] = useState("markdown");
+      const [country, setCountry] = useState("us");
+      const [pretty, setPretty] = useState(true);
+      const [customLabel, setCustomLabel] = useState("");
+      const [fallback, setFallback] = useState("Varies");
+      const [copied, setCopied] = useState(false);
+
+      const lightUrl = useMemo(() => buildBadgeUrl({
+        packageId, badgeType, country, pretty, customLabel, fallback, theme: "light",
+      }), [packageId, badgeType, country, pretty, customLabel, fallback]);
+
+      const darkUrl = useMemo(() => buildBadgeUrl({
+        packageId, badgeType, country, pretty, customLabel, fallback, theme: "dark",
+      }), [packageId, badgeType, country, pretty, customLabel, fallback]);
+
+      const directUrl = badgeType === "full" && badgeTheme === "dark" ? darkUrl : lightUrl;
+
+      const markdown = useMemo(() => buildMarkdown({
+        badgeType, badgeTheme, packageId, lightUrl, darkUrl, directUrl,
+      }), [badgeType, badgeTheme, packageId, lightUrl, darkUrl, directUrl]);
+
+      const output = outputType === "url" ? directUrl : markdown;
+      const copyLabel = copied
+        ? "Copied"
+        : outputType === "url"
+          ? "Copy URL"
+          : "Copy snippet";
+
+      const isFull = badgeType === "full";
+      const isVersion = badgeType === "version";
+
+      async function copyOutput() {
+        try {
+          await navigator.clipboard.writeText(output);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1400);
+        } catch {
+          // Fallback: select the output text for manual copy.
+          const pre = document.getElementById("output");
+          if (!pre) return;
+          const range = document.createRange();
+          range.selectNodeContents(pre);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }
+
+      function update(setter) {
+        return (value) => {
+          setCopied(false);
+          setter(value);
+        };
+      }
+
+      return html`
+        <div class="page">
+          <nav class="nav">
+            <div class="brand" aria-label="PlayBadges">
+              <span class="brand-play"><${PlayMark} />Play</span>
+              <span class="brand-badges">Badges</span>
+            </div>
+            <a
+              class="nav-link"
+              href="https://github.com/pavi2410/PlayBadges"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on GitHub
+            </a>
+          </nav>
+
+          <header>
+            <h1>Make your Play Store stats visible.</h1>
+            <p class="lede">
+              Generate a live badge for any Android app, then copy a URL or ready-to-paste Markdown.
+            </p>
+          </header>
+
+          <div class="layout">
+            <section class="card">
+              <div class="card-h">
+                Badge settings
+                <span class="live">Live</span>
+              </div>
+              <div class="card-b">
+                <div class="field">
+                  <label for="packageId">Google Play package ID</label>
+                  <input
+                    id="packageId"
+                    type="text"
+                    value=${packageId}
+                    placeholder="com.example.app"
+                    autocomplete="off"
+                    spellcheck=${false}
+                    onInput=${(e) => update(setPackageId)(e.currentTarget.value)}
+                  />
+                  <div class="hint">Find this after <code>id=</code> in the app's Play Store URL.</div>
+                </div>
+
+                <div class="field">
+                  <div class="label">Badge type</div>
+                  <${Pills}
+                    ariaLabel="Badge type"
+                    value=${badgeType}
+                    onChange=${update(setBadgeType)}
+                    options=${Object.entries(BADGE_LABELS).map(([value, label]) => ({ value, label }))}
+                  />
+                </div>
+
+                ${isFull ? html`
+                  <div class="field">
+                    <div class="label">Theme</div>
+                    <${Pills}
+                      ariaLabel="Theme"
+                      value=${badgeTheme}
+                      onChange=${update(setBadgeTheme)}
+                      options=${[
+                        { value: "light", label: "Light" },
+                        { value: "dark", label: "Dark" },
+                        { value: "auto", label: "Auto" },
+                      ]}
+                    />
+                    <div class="hint">Auto switches with the reader's system theme in Markdown.</div>
+                  </div>
+                ` : html`
+                  ${!isVersion && html`
+                    <div class="field">
+                      <label class="check">
+                        <input
+                          type="checkbox"
+                          checked=${pretty}
+                          onChange=${(e) => update(setPretty)(e.currentTarget.checked)}
+                        />
+                        Compact numbers
+                      </label>
+                    </div>
+                  `}
+                  <div class="field">
+                    <label for="customLabel">Custom label (optional)</label>
+                    <input
+                      id="customLabel"
+                      type="text"
+                      value=${customLabel}
+                      placeholder=${BADGE_LABELS[badgeType]}
+                      autocomplete="off"
+                      onInput=${(e) => update(setCustomLabel)(e.currentTarget.value)}
+                    />
+                  </div>
+                  ${isVersion && html`
+                    <div class="field">
+                      <label for="fallback">Fallback text</label>
+                      <input
+                        id="fallback"
+                        type="text"
+                        value=${fallback}
+                        autocomplete="off"
+                        onInput=${(e) => update(setFallback)(e.currentTarget.value)}
+                      />
+                    </div>
+                  `}
+                `}
+
+                <div class="field">
+                  <label for="country">Play Store country</label>
+                  <select
+                    id="country"
+                    value=${country}
+                    onChange=${(e) => update(setCountry)(e.currentTarget.value)}
+                  >
+                    ${COUNTRIES.map((item) => html`
+                      <option key=${item.value} value=${item.value}>${item.label}</option>
+                    `)}
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section>
+              <div class="section-title">
+                <h2>Preview</h2>
+                <span class="hint">Updates as you type</span>
+              </div>
+              <div class="preview-shell" aria-live="polite">
+                <${Preview}
+                  badgeType=${badgeType}
+                  badgeTheme=${badgeTheme}
+                  lightUrl=${lightUrl}
+                  darkUrl=${darkUrl}
+                  directUrl=${directUrl}
+                />
+              </div>
+
+              <div class="card" style="margin-top: 20px;">
+                <div class="card-h">
+                  Share badge
+                  <span class="meta">Ready to paste</span>
+                </div>
+                <div class="card-b">
+                  <div style="margin-bottom: 12px;">
+                    <${Pills}
+                      ariaLabel="Output type"
+                      value=${outputType}
+                      onChange=${update(setOutputType)}
+                      options=${[
+                        { value: "url", label: "Image URL" },
+                        { value: "markdown", label: "Markdown" },
+                      ]}
+                    />
+                  </div>
+                  <pre class="output" id="output">${output}</pre>
+                  <div class="actions">
+                    <p class="hint">The image stays current as Play Store stats change.</p>
+                    <button class="primary" type="button" onClick=${copyOutput}>
+                      <${CopyIcon} />
+                      <span>${copyLabel}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <footer class="footer">
+            <div>Free, open source, and generated on demand.</div>
+            <div class="footer-links">
+              <a href="https://github.com/pavi2410/PlayBadges#usage" target="_blank" rel="noreferrer">API docs</a>
+              <span aria-hidden="true">•</span>
+              <a href="https://github.com/pavi2410/PlayBadges" target="_blank" rel="noreferrer">GitHub</a>
+              <span aria-hidden="true">•</span>
+              <a href=${ORIGIN + "/health"}>Health</a>
+            </div>
+          </footer>
+        </div>
+      `;
+    }
+
+    render(html`<${App} />`, document.getElementById("app"));
+  </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import {Hono} from "hono"
 import {fetchAppDetails} from './google-play-scraper.js'
+import homePageHtml from "../public/index.html" with { type: "text" }
 import {shieldsBadge} from "./shields-badge";
 import {compactNumberFormatter, findCountryCode, makeStars} from "./utils";
 
@@ -9,13 +10,7 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>({strict: false})
 
-app.get('/', (c) => {
-    if (c.env.NODE_ENV === 'production') {
-        return c.redirect('https://github.com/pavi2410/PlayBadges')
-    } else {
-        return c.text('Hello World!')
-    }
-})
+app.get('/', (c) => c.html(homePageHtml))
 
 app.get('/health', (c) => {
   return c.json({
