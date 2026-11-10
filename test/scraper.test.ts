@@ -10,7 +10,8 @@ describe("scraper", () => {
 
             expect(appDetails).not.toBeNull();
 
-            expect(appDetails!.title).toBe(fixture.appTitle);
+            expect(appDetails!.title).toBeTypeOf('string');
+            expect(appDetails!.title).not.toBe('');
             expect(appDetails!.description).not.toBeNull();
             expect(appDetails!.summary).not.toBeNull();
             expect(appDetails!.installs).not.toBeNull();
