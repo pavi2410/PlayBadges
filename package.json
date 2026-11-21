@@ -19,8 +19,8 @@
     "@hono/node-server": "^2.0.6",
     "@types/react": "^19.2.9",
     "@types/react-dom": "^19.2.3",
-    "vitest": "^4.0.18",
-    "wrangler": "^4.105.0"
+    "vitest": "^4.1.12",
+    "wrangler": "^4.166.0"
   },
   "dependencies": {
     "badgen": "^3.2.3",
