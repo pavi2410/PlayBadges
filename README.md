@@ -2,6 +2,14 @@
 
 Show off your Play Store™ app's downloads and rating in your repo
 
+## Badge generator
+
+The quickest way to get a badge is the generator at **[playbadges.pavi2410.com](https://playbadges.pavi2410.com)**. Enter your app's package ID, pick a badge type and options, check the live preview, then copy the image URL or a ready-to-paste Markdown snippet.
+
+Your settings are kept in the page URL, so you can bookmark or share a configured badge, for example [playbadges.pavi2410.com/?id=me.pavi2410.folo&type=downloads](https://playbadges.pavi2410.com/?id=me.pavi2410.folo&type=downloads).
+
+To build badge URLs by hand, see the endpoints below.
+
 ## Usage
 
 1. Card
