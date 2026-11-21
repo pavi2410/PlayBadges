@@ -1,0 +1,20 @@
+<svg width="96.8" height="20" viewBox="0 0 968 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="הורדות: 1.2M">
+  <title>הורדות: 1.2M</title>
+  <linearGradient id="id0" x2="0" y2="100%">
+    <stop offset="0" stop-opacity=".1" stop-color="#EEE"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="id1"><rect width="968" height="200" rx="30" fill="#FFF"/></mask>
+  <g mask="url(#id1)">
+    <rect width="595" height="200" fill="#0f0f23"/>
+    <rect width="373" height="200" fill="#00cc00" x="595"/>
+    <rect width="968" height="200" fill="url(#id0)"/>
+  </g>
+  <g aria-hidden="true" text-anchor="start" font-family="Verdana,DejaVu Sans,sans-serif" font-size="110">
+    <text x="220" y="148" textLength="335" fill="#000" opacity="0.25">הורדות</text>
+    <text x="210" y="138" textLength="335" fill="#fff">הורדות</text>
+    <text x="650" y="148" textLength="273" fill="#000" opacity="0.25">1.2M</text>
+    <text x="640" y="138" textLength="273" fill="#fff">1.2M</text>
+  </g>
+  <image x="40" y="35" width="130" height="130" xlink:href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZjVmNWY1IiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+R29vZ2xlIFBsYXk8L3RpdGxlPjxwYXRoIGQ9Ik0yMi4wMTggMTMuMjk4bC0zLjkxOSAyLjIxOC0zLjUxNS0zLjQ5MyAzLjU0My0zLjUyMSAzLjg5MSAyLjIwMmExLjQ5IDEuNDkgMCAwIDEgMCAyLjU5NHpNMS4zMzcuOTI0YTEuNDg2IDEuNDg2IDAgMCAwLS4xMTIuNTY4djIxLjAxN2MwIC4yMTcuMDQ1LjQxOS4xMjQuNmwxMS4xNTUtMTEuMDg3TDEuMzM3LjkyNHptMTIuMjA3IDEwLjA2NWwzLjI1OC0zLjIzOEwzLjQ1LjE5NWExLjQ2NiAxLjQ2NiAwIDAgMC0uOTQ2LS4xNzlsMTEuMDQgMTAuOTczem0wIDIuMDY3bC0xMSAxMC45MzNjLjI5OC4wMzYuNjEyLS4wMTYuOTA2LS4xODNsMTMuMzI0LTcuNTQtMy4yMy0zLjIxeiIvPjwvc3ZnPg=="/>
+</svg>

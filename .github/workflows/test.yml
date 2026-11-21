@@ -33,4 +33,4 @@ jobs:
       run: sleep 5
 
     - name: Run tests
-      run: bun run test
+      run: bun run test:node
