@@ -9,13 +9,15 @@
     "strict": true,
     "alwaysStrict": true,
     "preserveConstEnums": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "types": [
-      "@cloudflare/workers-types"
+      "@cloudflare/workers-types",
+      "node"
     ],
     "allowSyntheticDefaultImports": true,
-    "jsx": "react"
+    "jsx": "react",
+    "skipLibCheck": true
   },
   "include": [
     "src"
