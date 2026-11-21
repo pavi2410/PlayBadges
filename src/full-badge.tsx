@@ -24,6 +24,14 @@ function debugOutline(enabled: boolean, color: string) {
     return enabled ? `border border-${color}-500` : ''
 }
 
+// Material Symbols "download" (outlined, weight 400), drawn as SVG so its position
+// doesn't depend on the icon font's vertical metrics.
+function downloadIconSrc(theme: Theme) {
+    const fill = theme === 'dark' ? '#99a1af' : '#6a7282'
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="${fill}"><path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg>`
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`
+}
+
 function starIcon(theme: Theme) {
     return cva({
         base: "flex items-center justify-center text-base font-semibold leading-none shrink-0",
@@ -43,7 +51,7 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = fa
                 }, theme),
                 debugOutline(debug, 'purple'),
             ].filter(Boolean).join(' ')}
-            style={{ fontFamily: 'Pretendard, Inter, "Material Symbols Outlined"' }}>
+            style={{ fontFamily: 'Pretendard, Inter' }}>
             <img
                 src={appDetails.icon!}
                 width={ICON_SIZE}
@@ -84,14 +92,7 @@ export async function fullBadge(appDetails: AppDetails, theme: Theme, debug = fa
                         debugOutline(debug, 'green'),
                     ].filter(Boolean).join(' ')}>
                     <div tw="flex flex-row items-center gap-1">
-                        <span
-                            tw={cva({
-                                base: "flex items-center justify-center text-xl leading-none w-5",
-                                light: "text-gray-500",
-                                dark: "text-gray-400",
-                            }, theme)}>
-                            &#xf090;
-                        </span>
+                        <img src={downloadIconSrc(theme)} width={20} height={20} tw="flex shrink-0" alt="" />
                         <span tw={cva({ base: "flex font-semibold", light: "text-black", dark: "text-white" }, theme)}>
                             {compactNumberFormatter.format(Number(appDetails.maxInstalls))}
                         </span>
