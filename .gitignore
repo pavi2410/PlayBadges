@@ -111,3 +111,6 @@ bundle.js
 
 # Debug files
 debug/
+
+# Vitest browser mode artifacts
+.vitest/
