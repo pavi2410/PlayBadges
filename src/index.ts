@@ -10,7 +10,23 @@ type Bindings = {
 
 const app = new Hono<{ Bindings: Bindings }>({strict: false})
 
+const SITE_URL = 'https://playbadges.pavi2410.com'
+
 app.get('/', (c) => c.html(homePageHtml))
+
+app.get('/robots.txt', (c) => c.text(
+  `User-agent: *\nAllow: /\nDisallow: /badge/\nDisallow: /app/\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+))
+
+app.get('/sitemap.xml', (c) => {
+  c.header('Content-Type', 'application/xml; charset=utf-8')
+  return c.body(
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    `  <url><loc>${SITE_URL}/</loc></url>\n` +
+    `</urlset>\n`
+  )
+})
 
 app.get('/health', (c) => {
   return c.json({

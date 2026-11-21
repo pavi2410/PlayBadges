@@ -3,9 +3,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PlayBadges — Play Store badge generator</title>
-  <meta name="description" content="Generate live Google Play Store download, rating, version, and app card badges for Markdown and READMEs.">
+  <title>PlayBadges — Google Play Store Badge Generator for GitHub READMEs</title>
+  <meta name="description" content="Free generator for live Google Play Store badges: downloads, rating, version, and an app card for your GitHub README or docs. Copy Markdown or an image URL.">
+  <meta name="keywords" content="Google Play badge, Play Store badge, downloads badge, rating badge, app version badge, README badge, GitHub badge, Android app badge, shields">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://playbadges.pavi2410.com/">
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#181818" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f9d58'/%3E%3Cpath d='M11 8.5v15c0 1 1.1 1.6 1.9 1l11.6-7.5c.8-.5.8-1.6 0-2.1L12.9 7.5C12.1 6.9 11 7.5 11 8.5Z' fill='%23fff'/%3E%3C/svg%3E">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PlayBadges">
+  <meta property="og:url" content="https://playbadges.pavi2410.com/">
+  <meta property="og:title" content="PlayBadges — Google Play Store Badge Generator">
+  <meta property="og:description" content="Live Google Play downloads, rating, version, and app card badges for your README. Free and open source.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="PlayBadges — Google Play Store Badge Generator">
+  <meta name="twitter:description" content="Live Google Play downloads, rating, version, and app card badges for your README. Free and open source.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PlayBadges",
+    "url": "https://playbadges.pavi2410.com/",
+    "description": "Generate live Google Play Store badges (downloads, rating, version, and app card) for GitHub READMEs and docs.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "sameAs": ["https://github.com/pavi2410/PlayBadges"]
+  }
+  </script>
   <style>
     :root {
       color-scheme: light dark;
@@ -322,7 +352,45 @@
       line-height: 1;
     }
 
+    .about {
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px 28px;
+    }
+    .about h2 {
+      grid-column: 1 / -1;
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+    .about h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+    }
+    .about p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .about .endpoint {
+      display: block;
+      overflow-wrap: anywhere;
+      color: var(--faint);
+      font-size: 12px;
+    }
+    .noscript {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
     @media (max-width: 860px) {
+      .about { grid-template-columns: 1fr; }
       .layout { grid-template-columns: 1fr; }
       .preview-grid { grid-template-columns: 1fr; }
       h1 { max-width: none; }
@@ -330,7 +398,75 @@
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div class="page">
+    <nav class="nav">
+      <a class="brand" href="/" aria-label="PlayBadges home" style="text-decoration: none;">
+        <span class="brand-play">
+          <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M4 3.4v13.2c0 .9 1 1.4 1.7.9l10.2-6.6c.7-.4.7-1.4 0-1.8L5.7 2.5C5 2 4 2.5 4 3.4Z" fill="currentColor" />
+          </svg>Play</span>
+        <span class="brand-badges">Badges</span>
+      </a>
+      <a class="nav-link" href="https://github.com/pavi2410/PlayBadges" target="_blank" rel="noreferrer">View on GitHub</a>
+    </nav>
+
+    <header>
+      <h1>Google Play Store badge generator</h1>
+      <p class="lede">
+        Make your Play Store stats visible. Generate a live badge for any Android app, then copy a URL or ready-to-paste Markdown for your README.
+      </p>
+    </header>
+
+    <main id="app">
+      <noscript>
+        <p class="noscript">The interactive generator needs JavaScript. You can still build a badge by hand with the endpoints below.</p>
+      </noscript>
+    </main>
+
+    <section class="about" aria-labelledby="about-title">
+      <h2 id="about-title">Badges for your Android app</h2>
+
+      <div>
+        <h3>App card</h3>
+        <p>A card with the app's icon, title, developer, downloads, and rating. It has light and dark themes and can follow the reader's system theme on GitHub.</p>
+        <code class="endpoint">/badge/full?id=&lt;package&gt;&amp;theme=light|dark</code>
+      </div>
+      <div>
+        <h3>Downloads badge</h3>
+        <p>Shows the app's install count from Google Play, either exact or compacted (for example 10K).</p>
+        <code class="endpoint">/badge/downloads?id=&lt;package&gt;[&amp;pretty]</code>
+      </div>
+      <div>
+        <h3>Rating badge</h3>
+        <p>Shows the average Play Store rating and the number of ratings, or a row of stars.</p>
+        <code class="endpoint">/badge/ratings?id=&lt;package&gt;[&amp;pretty]</code>
+      </div>
+      <div>
+        <h3>Version badge</h3>
+        <p>Shows the latest published version, with fallback text for apps whose version varies by device.</p>
+        <code class="endpoint">/badge/version?id=&lt;package&gt;[&amp;fallback=Varies]</code>
+      </div>
+      <div>
+        <h3>Where do I find the package ID?</h3>
+        <p>Open the app on play.google.com. The package ID is the part after <code>id=</code> in the URL, for example <code>com.example.app</code>.</p>
+      </div>
+      <div>
+        <h3>Do the badges stay up to date?</h3>
+        <p>Yes. Each badge is rendered on demand from the current Play Store listing. All badges also accept <code>country</code>, and the small badges accept <code>label</code>.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>Free, open source, and generated on demand. Not affiliated with Google.</div>
+      <div class="footer-links">
+        <a href="https://github.com/pavi2410/PlayBadges#usage" target="_blank" rel="noreferrer">API docs</a>
+        <span aria-hidden="true">•</span>
+        <a href="https://github.com/pavi2410/PlayBadges" target="_blank" rel="noreferrer">GitHub</a>
+        <span aria-hidden="true">•</span>
+        <a href="/health">Health</a>
+      </div>
+    </footer>
+  </div>
   <script type="importmap">
   {
     "imports": {
@@ -417,14 +553,6 @@
       } catch {
         // Safari throttles rapid replaceState calls; the next change will catch up.
       }
-    }
-
-    function PlayMark() {
-      return html`
-        <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
-          <path d="M4 3.4v13.2c0 .9 1 1.4 1.7.9l10.2-6.6c.7-.4.7-1.4 0-1.8L5.7 2.5C5 2 4 2.5 4 3.4Z" fill="currentColor" />
-        </svg>
-      `;
     }
 
     function CopyIcon() {
@@ -583,29 +711,6 @@
       }
 
       return html`
-        <div class="page">
-          <nav class="nav">
-            <div class="brand" aria-label="PlayBadges">
-              <span class="brand-play"><${PlayMark} />Play</span>
-              <span class="brand-badges">Badges</span>
-            </div>
-            <a
-              class="nav-link"
-              href="https://github.com/pavi2410/PlayBadges"
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on GitHub
-            </a>
-          </nav>
-
-          <header>
-            <h1>Make your Play Store stats visible.</h1>
-            <p class="lede">
-              Generate a live badge for any Android app, then copy a URL or ready-to-paste Markdown.
-            </p>
-          </header>
-
           <div class="layout">
             <section class="card">
               <div class="card-h">
@@ -750,21 +855,13 @@
             </section>
           </div>
 
-          <footer class="footer">
-            <div>Free, open source, and generated on demand.</div>
-            <div class="footer-links">
-              <a href="https://github.com/pavi2410/PlayBadges#usage" target="_blank" rel="noreferrer">API docs</a>
-              <span aria-hidden="true">•</span>
-              <a href="https://github.com/pavi2410/PlayBadges" target="_blank" rel="noreferrer">GitHub</a>
-              <span aria-hidden="true">•</span>
-              <a href=${ORIGIN + "/health"}>Health</a>
-            </div>
-          </footer>
-        </div>
       `;
     }
 
-    render(html`<${App} />`, document.getElementById("app"));
+    // Clear the no-JS fallback before Preact mounts the generator.
+    const mount = document.getElementById("app");
+    mount.textContent = "";
+    render(html`<${App} />`, mount);
   </script>
 </body>
 </html>
