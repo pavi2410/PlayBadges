@@ -342,7 +342,7 @@
   </script>
   <script type="module">
     import { render } from "preact";
-    import { useMemo, useState } from "preact/hooks";
+    import { useEffect, useMemo, useState } from "preact/hooks";
     import { html } from "htm/preact";
 
     const ORIGIN = window.location.origin.replace(/\/$/, "");
@@ -363,6 +363,61 @@
       { value: "br", label: "Brazil" },
       { value: "kr", label: "South Korea" },
     ];
+
+    const DEFAULTS = {
+      packageId: "me.pavi2410.folo",
+      badgeType: "full",
+      badgeTheme: "auto",
+      outputType: "markdown",
+      country: "us",
+      pretty: true,
+      customLabel: "",
+      fallback: "Varies",
+    };
+
+    const THEMES = ["light", "dark", "auto"];
+    const OUTPUT_TYPES = ["url", "markdown"];
+
+    // Generator state <-> query string. Only non-default values are written,
+    // so the default page stays at a bare "/".
+    function readStateFromUrl() {
+      const q = new URLSearchParams(window.location.search);
+      const pick = (key, allowed, fallback) => {
+        const value = q.get(key);
+        return value !== null && allowed.includes(value) ? value : fallback;
+      };
+      return {
+        packageId: q.get("id") ?? DEFAULTS.packageId,
+        badgeType: pick("type", Object.keys(BADGE_LABELS), DEFAULTS.badgeType),
+        badgeTheme: pick("theme", THEMES, DEFAULTS.badgeTheme),
+        outputType: pick("out", OUTPUT_TYPES, DEFAULTS.outputType),
+        country: pick("country", COUNTRIES.map((c) => c.value), DEFAULTS.country),
+        pretty: q.get("pretty") !== "0",
+        customLabel: q.get("label") ?? DEFAULTS.customLabel,
+        fallback: q.get("fallback") ?? DEFAULTS.fallback,
+      };
+    }
+
+    function writeStateToUrl(state) {
+      const q = new URLSearchParams();
+      if (state.packageId !== DEFAULTS.packageId) q.set("id", state.packageId);
+      if (state.badgeType !== DEFAULTS.badgeType) q.set("type", state.badgeType);
+      if (state.badgeTheme !== DEFAULTS.badgeTheme) q.set("theme", state.badgeTheme);
+      if (state.outputType !== DEFAULTS.outputType) q.set("out", state.outputType);
+      if (state.country !== DEFAULTS.country) q.set("country", state.country);
+      if (!state.pretty) q.set("pretty", "0");
+      if (state.customLabel !== DEFAULTS.customLabel) q.set("label", state.customLabel);
+      if (state.fallback !== DEFAULTS.fallback) q.set("fallback", state.fallback);
+
+      const search = q.toString();
+      const next = window.location.pathname + (search ? "?" + search : "") + window.location.hash;
+      if (next === window.location.pathname + window.location.search + window.location.hash) return;
+      try {
+        history.replaceState(null, "", next);
+      } catch {
+        // Safari throttles rapid replaceState calls; the next change will catch up.
+      }
+    }
 
     function PlayMark() {
       return html`
@@ -462,15 +517,22 @@
     }
 
     function App() {
-      const [packageId, setPackageId] = useState("me.pavi2410.folo");
-      const [badgeType, setBadgeType] = useState("full");
-      const [badgeTheme, setBadgeTheme] = useState("auto");
-      const [outputType, setOutputType] = useState("markdown");
-      const [country, setCountry] = useState("us");
-      const [pretty, setPretty] = useState(true);
-      const [customLabel, setCustomLabel] = useState("");
-      const [fallback, setFallback] = useState("Varies");
+      const [initial] = useState(readStateFromUrl);
+      const [packageId, setPackageId] = useState(initial.packageId);
+      const [badgeType, setBadgeType] = useState(initial.badgeType);
+      const [badgeTheme, setBadgeTheme] = useState(initial.badgeTheme);
+      const [outputType, setOutputType] = useState(initial.outputType);
+      const [country, setCountry] = useState(initial.country);
+      const [pretty, setPretty] = useState(initial.pretty);
+      const [customLabel, setCustomLabel] = useState(initial.customLabel);
+      const [fallback, setFallback] = useState(initial.fallback);
       const [copied, setCopied] = useState(false);
+
+      useEffect(() => {
+        writeStateToUrl({
+          packageId, badgeType, badgeTheme, outputType, country, pretty, customLabel, fallback,
+        });
+      }, [packageId, badgeType, badgeTheme, outputType, country, pretty, customLabel, fallback]);
 
       const lightUrl = useMemo(() => buildBadgeUrl({
         packageId, badgeType, country, pretty, customLabel, fallback, theme: "light",
